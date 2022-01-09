@@ -1,6 +1,6 @@
 # Getting started with Calor
 
-This project was created by Nedas Cerneckis and supervised under Dr. Luke Chen
+This project was created by **Nedas Cerneckis** and supervised under **Dr. Luke Chen**
 
 ## Installation
 
