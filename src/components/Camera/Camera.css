@@ -1,0 +1,8 @@
+.camera {
+    display: flex;
+    justify-content: center;
+}
+
+canvas {
+    position: absolute;
+}
