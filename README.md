@@ -1,6 +1,9 @@
-# Getting started with Calor
+# Calor - Final year project
+A web application capable of assisting in psychotherapy built for therapists using AI and Deep Learning
 
-This project was created by **Nedas Cerneckis** and supervised under **Dr. Luke Chen**
+## Acknowledgements
+
+This project is designed and developed by **Nedas Cerneckis** under the supervision of **Dr. Luke Chen**
 
 ## Installation
 
