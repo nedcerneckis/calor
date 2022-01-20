@@ -4,6 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import logo from '../../logo.svg';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
@@ -11,8 +12,17 @@ const Navbar = () => {
       <AppBar position="static" color="primary">
         <Toolbar>
             <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-              <img src={logo} className="App-logo" alt="logo" />
-              CALOR
+                <img src={logo} className="App-logo" alt="logo" />
+                CALOR
+            </Typography>
+            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+              Dashboard
+            </Typography>
+            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+              Patients
+            </Typography>
+            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+              Reports
             </Typography>
           <Button variant="outlined">
             Login
