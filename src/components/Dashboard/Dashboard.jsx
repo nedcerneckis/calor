@@ -4,7 +4,6 @@ import Navbar from '../Navbar/Navbar';
 const Dashboard = () => {
     return (
         <div>
-            <Navbar />
             Dashboard
         </div>
     );

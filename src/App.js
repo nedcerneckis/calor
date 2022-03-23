@@ -1,6 +1,6 @@
 import './App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import Homepage from './components/Homepage/Homepage';
+import Navbar from './components/Navbar/Navbar';
 import Dashboard from './components/Dashboard/Dashboard';
 import Reports from './components/Reports/Reports';
 import Patients from './components/Patients/Patients';
@@ -10,6 +10,11 @@ const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
+  props: {
+    Link: {
+      underline: "none"
+    }
+  }
 });
 
 function App() {
@@ -17,10 +22,11 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/dashboards" element={<Dashboard />} />
-          <Route path="/patients" element={<Patients />} />
-          <Route path="/reports" element={<Reports />} />
+          <Route path="/" element={<Navbar />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="patients" element={<Patients />} />
+            <Route path="reports" element={<Reports />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

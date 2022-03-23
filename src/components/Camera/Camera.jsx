@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import * as face from 'face-api.js';
 import './Camera.css';
 
@@ -7,7 +7,6 @@ const Camera = () => {
     const camWidth = 1280;
     const videoRef = useRef();
     const canvasRef = useRef();
-    const [expressions, setExpressions] = useState({})
 
     useEffect(() => {
         const MODEL_URL = `${process.env.PUBLIC_URL}/models`
@@ -23,10 +22,9 @@ const Camera = () => {
     }, []);
 
     const enableWebcam = () => {
-        navigator.mediaDevices.getUserMedia({ video: { width: camHeight } })
+        navigator.mediaDevices.getUserMedia({ video: { width: camWidth } })
             .then(stream => {
-                let video = videoRef.current.srcObject = stream;
-                video.play();
+                videoRef.current.srcObject = stream;
             });
     }
 
@@ -44,7 +42,7 @@ const Camera = () => {
             face.draw.drawDetections(canvasRef.current, resizedDetections);
             face.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
             face.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
-        }, 100);
+        }, 50);
     }
 
     return (

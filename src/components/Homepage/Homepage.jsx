@@ -6,7 +6,6 @@ const Homepage = () => {
     return (
         <div>
             <Navbar />
-            <Camera />
         </div>
     );
 };
