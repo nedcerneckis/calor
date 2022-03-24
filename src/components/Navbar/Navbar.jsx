@@ -8,6 +8,8 @@ import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -15,8 +17,7 @@ import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import InsertChartSharpIcon from '@mui/icons-material/InsertChartSharp';
 import PersonSearchSharpIcon from '@mui/icons-material/PersonSearchSharp';
 import GridViewSharpIcon from '@mui/icons-material/GridViewSharp';
-import { Link } from 'react-router-dom';
-
+import { Link, Outlet } from 'react-router-dom';
 import logo from '../../logo.svg';
 
 const drawerWidth = 300;
@@ -51,7 +52,12 @@ const Navbar = () => {
         <Toolbar />
         <Divider />
         <List>
-          <ListItem disablePadding>
+          <ListItem 
+            component={Link}
+            to="/"
+            disablePadding
+            style={{ color: 'inherit', textDecoration: 'inherit'}}
+          >
             <ListItemButton>
               <ListItemIcon>
                 <PlayCircleFilledIcon />
@@ -60,15 +66,25 @@ const Navbar = () => {
             </ListItemButton>
           </ListItem>
           <Divider />
-          <ListItem component={Link} to="/dashboard" disablePadding>
+          <ListItem 
+            component={Link} 
+            to="/dashboard" 
+            disablePadding
+            style={{ color: 'inherit', textDecoration: 'inherit'}}
+          >
             <ListItemButton>
               <ListItemIcon>
                 <GridViewSharpIcon />
               </ListItemIcon>
-                <ListItemText primary="Dashboard" />
+              <ListItemText primary="Dashboard" />
             </ListItemButton>
           </ListItem>
-          <ListItem component={Link} to="/patients" disablePadding>
+          <ListItem 
+            component={Link} 
+            to={"/patients"} 
+            disablePadding
+            style={{ color: 'inherit', textDecoration: 'inherit'}}
+          >
             <ListItemButton>
               <ListItemIcon>
                 <PersonSearchSharpIcon />
@@ -76,12 +92,17 @@ const Navbar = () => {
               <ListItemText primary="Patients" />
             </ListItemButton>
           </ListItem>
-          <ListItem component={Link} to="/reports" disablePadding>
+          <ListItem 
+            component={Link} 
+            to="/reports" 
+            disablePadding
+            style={{ color: 'inherit', textDecoration: 'inherit'}}
+          >
             <ListItemButton>
               <ListItemIcon>
                 <InsertChartSharpIcon />
               </ListItemIcon>
-                <ListItemText primary="Reports" />
+              <ListItemText primary="Reports" />
             </ListItemButton>
           </ListItem>
         </List>
@@ -91,22 +112,7 @@ const Navbar = () => {
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
       >
         <Toolbar />
-        <Typography paragraph>
-          Stop looking at my screen Diarmuid.🤪
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <Outlet />
       </Box>
     </Box>
   );

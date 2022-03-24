@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import * as face from 'face-api.js';
+import Switch from '@mui/material/Switch';
 import './Camera.css';
 
 const Camera = () => {
@@ -8,18 +9,31 @@ const Camera = () => {
     const videoRef = useRef();
     const canvasRef = useRef();
 
+    const [checked, setChecked] = useState(false);
+
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+      };
+
     useEffect(() => {
-        const MODEL_URL = `${process.env.PUBLIC_URL}/models`
-        const initModels = async () => {
-            Promise.all([
-                face.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-                face.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-                face.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-                face.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-            ]).then(enableWebcam);
+        if(checked){
+            const MODEL_URL = `${process.env.PUBLIC_URL}/models`
+            const initModels = async () => {
+                await face.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+                await face.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+                await face.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+                await face.nets.faceExpressionNet.loadFromUri(MODEL_URL);
+                enableWebcam();
+            }
+            initModels();
         }
-        initModels();
-    }, []);
+    }, [checked]);
+
+    useEffect(() => {
+        return () => {
+            videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+        }
+    }, [])
 
     const enableWebcam = () => {
         navigator.mediaDevices.getUserMedia({ video: { width: camWidth } })
@@ -47,6 +61,12 @@ const Camera = () => {
 
     return (
         <div className="analysis">
+            <Switch
+                checked={checked}
+                onChange={handleChange}
+                inputProps={{ 'aria-label': 'controlled' }}
+            />
+            { checked ?  
             <div className="camera">
                 <video 
                     ref={videoRef} 
@@ -58,6 +78,7 @@ const Camera = () => {
                 />
                 <canvas ref={canvasRef} />
             </div>
+            : null}
         </div>
     )
 }
