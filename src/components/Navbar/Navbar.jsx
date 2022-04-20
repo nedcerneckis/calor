@@ -8,8 +8,6 @@ import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -17,6 +15,7 @@ import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import InsertChartSharpIcon from '@mui/icons-material/InsertChartSharp';
 import PersonSearchSharpIcon from '@mui/icons-material/PersonSearchSharp';
 import GridViewSharpIcon from '@mui/icons-material/GridViewSharp';
+import LoginIcon from '@mui/icons-material/Login';
 import { Link, Outlet } from 'react-router-dom';
 import logo from '../../logo.svg';
 
@@ -103,6 +102,20 @@ const Navbar = () => {
                 <InsertChartSharpIcon />
               </ListItemIcon>
               <ListItemText primary="Reports" />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem 
+            component={Link} 
+            to="/signin" 
+            disablePadding
+            style={{ color: 'inherit', textDecoration: 'inherit'}}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <LoginIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sign in" />
             </ListItemButton>
           </ListItem>
         </List>

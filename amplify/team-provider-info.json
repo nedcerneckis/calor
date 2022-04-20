@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-calor-dev-123307-authRole",
+      "UnauthRoleArn": "arn:aws:iam::516363498738:role/amplify-calor-dev-123307-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::516363498738:role/amplify-calor-dev-123307-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-calor-dev-123307-deployment",
+      "UnauthRoleName": "amplify-calor-dev-123307-unauthRole",
+      "StackName": "amplify-calor-dev-123307",
+      "StackId": "arn:aws:cloudformation:eu-west-1:516363498738:stack/amplify-calor-dev-123307/54966290-bf0b-11ec-a83d-0ae6353aa377",
+      "AmplifyAppId": "d1a9f9sh3tygm0"
+    },
+    "categories": {
+      "auth": {
+        "calor4970151b": {}
+      }
+    }
+  }
+}

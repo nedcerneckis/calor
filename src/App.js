@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import React from 'react';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
+import Signin from './components/Signin/Signin';
 
 const darkTheme = createTheme({
   palette: {
@@ -16,7 +17,7 @@ const darkTheme = createTheme({
   }
 });
 
-function App() {
+const App = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <BrowserRouter>
@@ -27,8 +28,9 @@ function App() {
             <Route path="patients" element={<Patients />} />
             <Route path="reports" element={<Reports />} />
           </Route>
-          <Route path ="/login" element={<Login />} />
-          <Route path ="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
