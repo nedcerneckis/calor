@@ -16,16 +16,17 @@ const Camera = () => {
       };
 
     useEffect(() => {
-        if(checked){
-            const MODEL_URL = `${process.env.PUBLIC_URL}/models`;
+        if (checked) {
+            const MODEL_URL = `${process.env.PUBLIC_URL}/models`
             const initModels = async () => {
-                await face.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-                await face.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-                await face.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-                await face.nets.faceExpressionNet.loadFromUri(MODEL_URL);
-                enableWebcam();
+                Promise.all([
+                    face.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+                    face.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+                    face.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+                    face.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+                ]).then(enableWebcam);
+                initModels();
             }
-            initModels();
         }
     }, [checked]);
 
