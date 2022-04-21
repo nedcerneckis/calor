@@ -6,8 +6,8 @@ import './Camera.css';
 const Camera = () => {
     const camHeight = 720;
     const camWidth = 1280;
-    const videoRef = useRef();
-    const canvasRef = useRef();
+    const videoRef = useRef(null);
+    const canvasRef = useRef(null);
 
     const [checked, setChecked] = useState(false);
 
@@ -17,7 +17,7 @@ const Camera = () => {
 
     useEffect(() => {
         if(checked){
-            const MODEL_URL = `${process.env.PUBLIC_URL}/models`
+            const MODEL_URL = '/models';
             const initModels = async () => {
                 await face.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
                 await face.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
