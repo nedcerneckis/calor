@@ -25,8 +25,8 @@ const Camera = () => {
                     face.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
                     face.nets.faceExpressionNet.loadFromUri(MODEL_URL),
                 ]).then(enableWebcam);
-                initModels();
             }
+            initModels();
         }
     }, [checked]);
 
