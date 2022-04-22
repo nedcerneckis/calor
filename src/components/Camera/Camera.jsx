@@ -17,13 +17,13 @@ const Camera = () => {
 
     useEffect(() => {
         if (checked) {
-            const MODEL_URL = `./public/models`
+            const MODEL_URL = `/models`
             const initModels = async () => {
                 Promise.all([
-                    face.nets.tinyFaceDetector.loadFromDisk(MODEL_URL),
-                    face.nets.faceLandmark68Net.loadFromDisk(MODEL_URL),
-                    face.nets.faceRecognitionNet.loadFromDisk(MODEL_URL),
-                    face.nets.faceExpressionNet.loadFromDisk(MODEL_URL),
+                    face.loadTinyFaceDetectorModel(MODEL_URL),
+                    face.loadFaceLandmarkModel(MODEL_URL),
+                    face.loadFaceRecognitionModel(MODEL_URL),
+                    face.loadFaceExpressionModel(MODEL_URL)
                 ]).then(enableWebcam);
             }
             initModels();
