@@ -2,12 +2,32 @@ import React, { useEffect, useState, useRef } from 'react'
 import * as face from 'face-api.js';
 import Switch from '@mui/material/Switch';
 import './Camera.css';
+import Webcam from 'react-webcam';
 
 const Camera = () => {
     const camHeight = 720;
     const camWidth = 1280;
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
+    const displaySize = {
+        width: camWidth,
+        height: camHeight
+    }
+
+    const drawFaceInterval = () => {
+        setInterval(async () => {
+            try {
+                const detections = await face.detectAllFaces(videoRef.current.video, new face.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+                const resizedDetections = face.resizeResults(detections, displaySize);
+                canvasRef.current.getContext('2d').clearRect(0, 0, camWidth, camHeight);
+                face.draw.drawDetections(canvasRef.current, resizedDetections);
+                face.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+                face.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
+            } catch (error) {
+                clearInterval(drawFaceInterval);
+            }
+        }, 50);
+    }
 
     const [checked, setChecked] = useState(false);
 
@@ -17,47 +37,22 @@ const Camera = () => {
 
     useEffect(() => {
         if (checked) {
-            const MODEL_URL = `/models`
+            const MODEL_URL = '/models';
             const initModels = async () => {
                 Promise.all([
                     face.loadTinyFaceDetectorModel(MODEL_URL),
                     face.loadFaceLandmarkModel(MODEL_URL),
                     face.loadFaceRecognitionModel(MODEL_URL),
                     face.loadFaceExpressionModel(MODEL_URL)
-                ]).then(enableWebcam);
+                ]);
             }
             initModels();
-        }
+        }    
     }, [checked]);
 
-    useEffect(() => {
-        return () => {
-            videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-        }
-    }, [])
-
-    const enableWebcam = () => {
-        navigator.mediaDevices.getUserMedia({ video: { width: camWidth } })
-            .then(stream => {
-                videoRef.current.srcObject = stream;
-            });
-    }
-
     const faceAnalysis = () => {
-        canvasRef.current.innerHTML = face.createCanvasFromMedia(videoRef.current);
-        const displaySize = {
-            width: camWidth,
-            height: camHeight
-        }
         face.matchDimensions(canvasRef.current, displaySize);
-        setInterval(async () => {
-            const detections = await face.detectAllFaces(videoRef.current, new face.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
-            const resizedDetections = face.resizeResults(detections, displaySize);
-            canvasRef.current.getContext('2d').clearRect(0, 0, camWidth, camHeight);
-            face.draw.drawDetections(canvasRef.current, resizedDetections);
-            face.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-            face.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
-        }, 50);
+        drawFaceInterval();
     }
 
     return (
@@ -69,13 +64,11 @@ const Camera = () => {
             />
             { checked ?  
             <div className="camera">
-                <video 
+                <Webcam 
                     ref={videoRef} 
-                    autoPlay 
-                    muted 
-                    height={camHeight} 
-                    width={camWidth} 
-                    onPlay={faceAnalysis} 
+                    videoConstraints={displaySize}
+                    onUserMedia={faceAnalysis} 
+
                 />
                 <canvas ref={canvasRef} />
             </div>
@@ -84,4 +77,4 @@ const Camera = () => {
     )
 }
 
-export default Camera
+export default Camera;
