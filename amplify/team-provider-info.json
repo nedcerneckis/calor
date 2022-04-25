@@ -1,19 +1,19 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-calor-dev-201854-authRole",
-      "UnauthRoleArn": "arn:aws:iam::516363498738:role/amplify-calor-dev-201854-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::516363498738:role/amplify-calor-dev-201854-authRole",
+      "AuthRoleName": "amplify-calor-dev-172016-authRole",
+      "UnauthRoleArn": "arn:aws:iam::516363498738:role/amplify-calor-dev-172016-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::516363498738:role/amplify-calor-dev-172016-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-calor-dev-201854-deployment",
-      "UnauthRoleName": "amplify-calor-dev-201854-unauthRole",
-      "StackName": "amplify-calor-dev-201854",
-      "StackId": "arn:aws:cloudformation:eu-west-1:516363498738:stack/amplify-calor-dev-201854/e3d7c270-c1a7-11ec-9e2e-0a9dcd729487",
-      "AmplifyAppId": "d39fkurynz4c7k"
+      "DeploymentBucketName": "amplify-calor-dev-172016-deployment",
+      "UnauthRoleName": "amplify-calor-dev-172016-unauthRole",
+      "StackName": "amplify-calor-dev-172016",
+      "StackId": "arn:aws:cloudformation:eu-west-1:516363498738:stack/amplify-calor-dev-172016/988fe540-c4b3-11ec-9269-062930f936a3",
+      "AmplifyAppId": "d27doue830zhj9"
     },
     "categories": {
       "auth": {
-        "calor950c8aa6": {}
+        "calor69e91bd5": {}
       }
     }
   }

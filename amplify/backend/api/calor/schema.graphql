@@ -3,9 +3,35 @@
 input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
 type Patient @model {
-  id: ID!
+  patientId: ID!
   firstName: String!
-  lastName: String!
-  age: Int!
-  diagnosis: String!
+  surname: String!
+  dateOfBirth: String!
+  sex: String!
+  email: String! 
+  alcoholUse: String!
+  drugUse: String!
+  physicalLevel: String!
+  dietClass: String!
+  prescribedDrugs: [Drug] @hasMany
+  medicalDiagnosis: [Diagnosis] @hasMany
+  medicalNotes: [MedicalNote] @hasMany
+}
+
+type Diagnosis @model {
+  diagnosisId: ID!
+  diagnosisName: String!
+}
+
+type Drug @model {
+  drugId: ID!
+  drugName: String!
+  dosage: String!
+  description: String
+}
+
+type MedicalNote @model {
+  medicalNoteId: ID!
+  patientID: Patient @belongsTo
+  content: String!
 }

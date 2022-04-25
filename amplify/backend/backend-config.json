@@ -18,7 +18,7 @@
     }
   },
   "auth": {
-    "calor950c8aa6": {
+    "calor69e91bd5": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],

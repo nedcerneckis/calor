@@ -1,109 +1,55 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getBlog = /* GraphQL */ `
-  query GetBlog($id: ID!) {
-    getBlog(id: $id) {
-      id
-      name
-      posts {
-        items {
-          id
-          title
-          createdAt
-          updatedAt
-          blogPostsId
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listBlogs = /* GraphQL */ `
-  query ListBlogs(
-    $filter: ModelBlogFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getPost = /* GraphQL */ `
-  query GetPost($id: ID!) {
-    getPost(id: $id) {
-      id
-      title
-      blog {
-        id
-        name
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      comments {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          postCommentsId
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-      blogPostsId
-    }
-  }
-`;
-export const listPosts = /* GraphQL */ `
-  query ListPosts(
-    $filter: ModelPostFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        title
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        blogPostsId
-      }
-      nextToken
-    }
-  }
-`;
 export const getPatient = /* GraphQL */ `
   query GetPatient($id: ID!) {
     getPatient(id: $id) {
+      patientId
+      firstName
+      surname
+      dateOfBirth
+      sex
+      email
+      alcoholUse
+      drugUse
+      physicalLevel
+      dietClass
+      prescribedDrugs {
+        items {
+          drugId
+          drugName
+          dosage
+          description
+          id
+          createdAt
+          updatedAt
+          patientPrescribedDrugsId
+        }
+        nextToken
+      }
+      medicalDiagnosis {
+        items {
+          diagnosisId
+          diagnosisName
+          id
+          createdAt
+          updatedAt
+          patientMedicalDiagnosisId
+        }
+        nextToken
+      }
+      medicalNotes {
+        items {
+          medicalNoteId
+          content
+          id
+          createdAt
+          updatedAt
+          patientMedicalNotesId
+        }
+        nextToken
+      }
       id
-      patientName
-      diagnosis
       createdAt
       updatedAt
     }
@@ -117,9 +63,26 @@ export const listPatients = /* GraphQL */ `
   ) {
     listPatients(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
+        patientId
+        firstName
+        surname
+        dateOfBirth
+        sex
+        email
+        alcoholUse
+        drugUse
+        physicalLevel
+        dietClass
+        prescribedDrugs {
+          nextToken
+        }
+        medicalDiagnosis {
+          nextToken
+        }
+        medicalNotes {
+          nextToken
+        }
         id
-        patientName
-        diagnosis
         createdAt
         updatedAt
       }
@@ -127,53 +90,137 @@ export const listPatients = /* GraphQL */ `
     }
   }
 `;
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
+export const getDiagnosis = /* GraphQL */ `
+  query GetDiagnosis($id: ID!) {
+    getDiagnosis(id: $id) {
+      diagnosisId
+      diagnosisName
       id
-      post {
-        id
-        title
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        blogPostsId
-      }
-      content
       createdAt
       updatedAt
-      postCommentsId
+      patientMedicalDiagnosisId
     }
   }
 `;
-export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
+export const listDiagnoses = /* GraphQL */ `
+  query ListDiagnoses(
+    $filter: ModelDiagnosisFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listDiagnoses(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
+        diagnosisId
+        diagnosisName
         id
-        post {
-          id
-          title
-          createdAt
-          updatedAt
-          blogPostsId
-        }
-        content
         createdAt
         updatedAt
-        postCommentsId
+        patientMedicalDiagnosisId
+      }
+      nextToken
+    }
+  }
+`;
+export const getDrug = /* GraphQL */ `
+  query GetDrug($id: ID!) {
+    getDrug(id: $id) {
+      drugId
+      drugName
+      dosage
+      description
+      id
+      createdAt
+      updatedAt
+      patientPrescribedDrugsId
+    }
+  }
+`;
+export const listDrugs = /* GraphQL */ `
+  query ListDrugs(
+    $filter: ModelDrugFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDrugs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        drugId
+        drugName
+        dosage
+        description
+        id
+        createdAt
+        updatedAt
+        patientPrescribedDrugsId
+      }
+      nextToken
+    }
+  }
+`;
+export const getMedicalNote = /* GraphQL */ `
+  query GetMedicalNote($id: ID!) {
+    getMedicalNote(id: $id) {
+      medicalNoteId
+      patientID {
+        patientId
+        firstName
+        surname
+        dateOfBirth
+        sex
+        email
+        alcoholUse
+        drugUse
+        physicalLevel
+        dietClass
+        prescribedDrugs {
+          nextToken
+        }
+        medicalDiagnosis {
+          nextToken
+        }
+        medicalNotes {
+          nextToken
+        }
+        id
+        createdAt
+        updatedAt
+      }
+      content
+      id
+      createdAt
+      updatedAt
+      patientMedicalNotesId
+    }
+  }
+`;
+export const listMedicalNotes = /* GraphQL */ `
+  query ListMedicalNotes(
+    $filter: ModelMedicalNoteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMedicalNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        medicalNoteId
+        patientID {
+          patientId
+          firstName
+          surname
+          dateOfBirth
+          sex
+          email
+          alcoholUse
+          drugUse
+          physicalLevel
+          dietClass
+          id
+          createdAt
+          updatedAt
+        }
+        content
+        id
+        createdAt
+        updatedAt
+        patientMedicalNotesId
       }
       nextToken
     }
