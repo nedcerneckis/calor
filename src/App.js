@@ -19,8 +19,8 @@ const darkTheme = createTheme({
 
 const App = () => {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <BrowserRouter>
+    <BrowserRouter>
+      <ThemeProvider theme={darkTheme}>
         <Routes>
           <Route path="/" element={<Navbar />}>
             <Route index element={<Camera />} />
@@ -32,8 +32,8 @@ const App = () => {
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 

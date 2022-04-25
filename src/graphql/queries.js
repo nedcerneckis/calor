@@ -98,6 +98,35 @@ export const listPosts = /* GraphQL */ `
     }
   }
 `;
+export const getPatient = /* GraphQL */ `
+  query GetPatient($id: ID!) {
+    getPatient(id: $id) {
+      id
+      patientName
+      diagnosis
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPatients = /* GraphQL */ `
+  query ListPatients(
+    $filter: ModelPatientFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPatients(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        patientName
+        diagnosis
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getComment = /* GraphQL */ `
   query GetComment($id: ID!) {
     getComment(id: $id) {

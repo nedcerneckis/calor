@@ -151,6 +151,39 @@ export const onDeletePost = /* GraphQL */ `
     }
   }
 `;
+export const onCreatePatient = /* GraphQL */ `
+  subscription OnCreatePatient {
+    onCreatePatient {
+      id
+      patientName
+      diagnosis
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePatient = /* GraphQL */ `
+  subscription OnUpdatePatient {
+    onUpdatePatient {
+      id
+      patientName
+      diagnosis
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePatient = /* GraphQL */ `
+  subscription OnDeletePatient {
+    onDeletePatient {
+      id
+      patientName
+      diagnosis
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateComment = /* GraphQL */ `
   subscription OnCreateComment {
     onCreateComment {

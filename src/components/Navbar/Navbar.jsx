@@ -80,7 +80,7 @@ const Navbar = () => {
           </ListItem>
           <ListItem 
             component={Link} 
-            to={"/patients"} 
+            to="/patients" 
             disablePadding
             style={{ color: 'inherit', textDecoration: 'inherit'}}
           >

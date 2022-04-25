@@ -10,6 +10,11 @@
       "StackName": "amplify-calor-dev-201854",
       "StackId": "arn:aws:cloudformation:eu-west-1:516363498738:stack/amplify-calor-dev-201854/e3d7c270-c1a7-11ec-9e2e-0a9dcd729487",
       "AmplifyAppId": "d39fkurynz4c7k"
+    },
+    "categories": {
+      "auth": {
+        "calor950c8aa6": {}
+      }
     }
   }
 }

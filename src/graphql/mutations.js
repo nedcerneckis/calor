@@ -169,6 +169,48 @@ export const deletePost = /* GraphQL */ `
     }
   }
 `;
+export const createPatient = /* GraphQL */ `
+  mutation CreatePatient(
+    $input: CreatePatientInput!
+    $condition: ModelPatientConditionInput
+  ) {
+    createPatient(input: $input, condition: $condition) {
+      id
+      patientName
+      diagnosis
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePatient = /* GraphQL */ `
+  mutation UpdatePatient(
+    $input: UpdatePatientInput!
+    $condition: ModelPatientConditionInput
+  ) {
+    updatePatient(input: $input, condition: $condition) {
+      id
+      patientName
+      diagnosis
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePatient = /* GraphQL */ `
+  mutation DeletePatient(
+    $input: DeletePatientInput!
+    $condition: ModelPatientConditionInput
+  ) {
+    deletePatient(input: $input, condition: $condition) {
+      id
+      patientName
+      diagnosis
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createComment = /* GraphQL */ `
   mutation CreateComment(
     $input: CreateCommentInput!
