@@ -1,4 +1,3 @@
-import { Authenticator } from '@aws-amplify/ui-react';
 import { Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
 

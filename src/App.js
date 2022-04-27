@@ -5,12 +5,12 @@ import Dashboard from './components/Dashboard/Dashboard';
 import Reports from './components/Reports/Reports';
 import Patients from './components/Patients/Patients';
 import Camera from './components/Camera/Camera';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import React from 'react';
-import Login from './components/Login/Login';
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import Signup from './components/Signup/Signup';
 import Signin from './components/Signin/Signin';
-import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import { Auth } from 'aws-amplify';
 
 const darkTheme = createTheme({
   palette: {
@@ -19,26 +19,32 @@ const darkTheme = createTheme({
 });
 
 const App = () => {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await Auth.currentAuthenticatedUser();
+      setUser(user);
+    }
+    fetchUser();
+  }, []);
+
   return (
-    <Authenticator>
-      {({ signOut, user}) => (
-      <BrowserRouter>
-        <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={darkTheme}>
+        <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navbar />}>
-              <Route index element={<Camera />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="patients" element={<Patients />} />
-              <Route path="reports" element={<Reports />} />
+              <Route index element={user ? (<Camera />) : (<Navigate to="/signin"/>)}/>
+              <Route path="dashboard" element={user ? (<Dashboard />) : (<Navigate to="/signin"/>)}/>
+              <Route path="patients" element={user ? (<Patients />) : (<Navigate to="/signin"/>)} />
+              <Route path="reports" element={user ? (<Reports />) : (<Navigate to="/signin"/>)} />
             </Route>
-            <Route path="/login" element={<Login />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
           </Routes>
-        </ThemeProvider>
-      </BrowserRouter>
-      )}
-    </Authenticator>
+        </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

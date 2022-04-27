@@ -19,10 +19,12 @@ import { Auth } from 'aws-amplify';
 const Signin = () => {
 
   const [isDetailsInvalid, setIsDetailsInvalid] = useState(false);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(Auth.currentUserInfo){
+    Auth.currentAuthenticatedUser().then((user) => setUser(user));
+    if(user){
       navigate('/');
     }
   }, []);
@@ -38,7 +40,8 @@ const Signin = () => {
 
   const signIn = async () => {
     try {
-      const user = await Auth.signIn(formik.values.email, formik.values.password);
+      const signedUser = await Auth.signIn(formik.values.email, formik.values.password);
+      setUser(signedUser);
       navigate('/');
     } catch(error) {
       setIsDetailsInvalid(() => true);

@@ -5,7 +5,6 @@ import {
   Container,
   CssBaseline,
   Grid,
-  IconButton,
   Link,
   TextField,
   Typography,
@@ -18,7 +17,6 @@ import * as yup from 'yup';
 import { Link as routerLink, Navigate, useNavigate } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { useState } from 'react';
-import { useEffect } from 'react';
 
 const Signin = () => {
 
@@ -38,8 +36,10 @@ const Signin = () => {
     confirmPassword: yup.string()
       .oneOf([yup.ref('password'), ''], 'Passwords do not match!')
       .required('Please confirm your password.'),
-    confirmCovapde: yup.string()
-      .required('Verification code required.')
+    firstName: yup.string()
+      .required('Please enter your first name.'),
+    lastName: yup.string()
+      .required('Please enter your last name.'),
   });
 
   const validConfirmationSchemaLogin = yup.object({
@@ -52,18 +52,25 @@ const Signin = () => {
     if (
       formik.values.email && 
       formik.values.password &&
-      formik.values.confirmPassword
+      formik.values.confirmPassword && 
+      formik.values.firstName &&
+      formik.values.lastName &&
+      formik.values.password === formik.values.confirmPassword
       ) {
       setEmailUsed(() => formik.values.email);
       try {
         const user = await Auth.signUp({
           username: formik.values.email,
-          password: formik.values.password
+          password: formik.values.password,
+          attributes: {
+            'custom:firstName': formik.values.firstName,
+            'custom:lastName': formik.values.lastName
+          }
         });
         console.log(user);
         setToggle(toggle => !toggle);
       } catch (error) {
-        setIsInvalidSignup(() => true);
+        setIsInvalidSignup(true);
         console.log(error);
       }
     } else {
@@ -93,8 +100,9 @@ const Signin = () => {
     initialValues: {
       email: '',
       password: '',
-      name: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      firstName: '',
+      lastName: ''
     },
     validationSchema: validSchemaLogin,
     onSubmit: (values) => {
@@ -162,7 +170,7 @@ const Signin = () => {
             <Grid container>
               <Grid item xs>
                 <MuiLink onClick={resendVerifyCode}>
-                  Resend Confirmation email.
+                  Resend confirmation email.
                 </MuiLink>
               </Grid>
             </Grid>
@@ -211,6 +219,32 @@ const Signin = () => {
               value={formik.values.email}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="firstName"
+              label="First Name"
+              name="firstName"
+              onChange={formik.handleChange}
+              value={formik.values.firstName}
+              error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+              helperText={formik.touched.firstName && formik.errors.firstName}
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+              onChange={formik.handleChange}
+              value={formik.values.lastName}
+              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+              helperText={formik.touched.lastName && formik.errors.lastName}
               autoFocus
             />
             <TextField

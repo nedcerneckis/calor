@@ -17,7 +17,7 @@ import InsertChartSharpIcon from '@mui/icons-material/InsertChartSharp';
 import PersonSearchSharpIcon from '@mui/icons-material/PersonSearchSharp';
 import GridViewSharpIcon from '@mui/icons-material/GridViewSharp';
 import LoginIcon from '@mui/icons-material/Login';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Navigate, Outlet, useNavigate } from 'react-router-dom';
 import logo from '../../logo.svg';
 import { Auth } from 'aws-amplify';
 import { useEffect, useState } from 'react';
@@ -26,7 +26,8 @@ const drawerWidth = 300;
 
 const Navbar = () => {
 
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,6 +40,7 @@ const Navbar = () => {
   const signOutUser = async () => {
     try {
       await Auth.signOut();
+      navigate('/signin');
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +60,7 @@ const Navbar = () => {
           </Typography>
           {currentUser ?
           <Typography variant="body2" sx={{ flexGrow: 1 }}>
-            Welcome, <b>{currentUser?.attributes?.email}</b>.
+            Welcome, <b>{currentUser?.attributes['custom:firstName']} {currentUser?.attributes['custom:lastName']}</b>.
           </Typography>
           : null
           }
@@ -133,7 +135,7 @@ const Navbar = () => {
             </ListItemButton>
           </ListItem>
           <Divider />
-          { Auth.currentUserInfo ?
+          { currentUser ?
           <ListItem 
             onClick={signOutUser}
             disablePadding
