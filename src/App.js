@@ -10,6 +10,7 @@ import React from 'react';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
 import Signin from './components/Signin/Signin';
+import { Authenticator } from '@aws-amplify/ui-react';
 
 const darkTheme = createTheme({
   palette: {
@@ -19,21 +20,25 @@ const darkTheme = createTheme({
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={darkTheme}>
-        <Routes>
-          <Route path="/" element={<Navbar />}>
-            <Route index element={<Camera />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="patients" element={<Patients />} />
-            <Route path="reports" element={<Reports />} />
-          </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-      </ThemeProvider>
-    </BrowserRouter>
+    <Authenticator>
+      {({ signOut, user}) => (
+      <BrowserRouter>
+        <ThemeProvider theme={darkTheme}>
+          <Routes>
+            <Route path="/" element={<Navbar />}>
+              <Route index element={<Camera />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="patients" element={<Patients />} />
+              <Route path="reports" element={<Reports />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+        </ThemeProvider>
+      </BrowserRouter>
+      )}
+    </Authenticator>
   );
 }
 

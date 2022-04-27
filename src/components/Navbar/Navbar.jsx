@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import LogoutIcon from '@mui/icons-material/Logout';
 import ListItemText from '@mui/material/ListItemText';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import InsertChartSharpIcon from '@mui/icons-material/InsertChartSharp';
@@ -18,10 +19,31 @@ import GridViewSharpIcon from '@mui/icons-material/GridViewSharp';
 import LoginIcon from '@mui/icons-material/Login';
 import { Link, Outlet } from 'react-router-dom';
 import logo from '../../logo.svg';
+import { Auth } from 'aws-amplify';
+import { useEffect, useState } from 'react';
 
 const drawerWidth = 300;
 
 const Navbar = () => {
+
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await Auth.currentUserInfo();
+      setCurrentUser(user);
+    }
+    fetchUser();
+  }, []);
+
+  const signOutUser = async () => {
+    try {
+      await Auth.signOut();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -34,6 +56,12 @@ const Navbar = () => {
             <img src={logo} className="App-logo" alt="logo" />
             CALOR
           </Typography>
+          {currentUser ?
+          <Typography variant="body2" sx={{ flexGrow: 1 }}>
+            Welcome, <b>{currentUser?.attributes?.email}</b>.
+          </Typography>
+          : null
+          }
         </Toolbar>
       </AppBar>
       <Drawer
@@ -105,6 +133,20 @@ const Navbar = () => {
             </ListItemButton>
           </ListItem>
           <Divider />
+          { Auth.currentUserInfo ?
+          <ListItem 
+            onClick={signOutUser}
+            disablePadding
+            style={{ color: 'inherit', textDecoration: 'inherit'}}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sign Out" />
+            </ListItemButton>
+          </ListItem>
+          :
           <ListItem 
             component={Link} 
             to="/signin" 
@@ -118,6 +160,7 @@ const Navbar = () => {
               <ListItemText primary="Sign in" />
             </ListItemButton>
           </ListItem>
+          }
         </List>
       </Drawer>
       <Box

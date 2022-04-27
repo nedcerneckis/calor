@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Container,
@@ -9,12 +10,23 @@ import {
   Typography
 } from '@mui/material'
 import logo from '../../logo.svg';
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Link as routerLink } from 'react-router-dom';
+import { Link as routerLink, useNavigate } from 'react-router-dom';
+import { Auth } from 'aws-amplify';
 
 const Signin = () => {
+
+  const [isDetailsInvalid, setIsDetailsInvalid] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(Auth.currentUserInfo){
+      navigate('/');
+    }
+  }, []);
+
   const validSchemaLogin = yup.object({
     email: yup.string()
       .email('Please enter a valid email address.')
@@ -24,6 +36,16 @@ const Signin = () => {
       .required('Please enter your password.')
   });
 
+  const signIn = async () => {
+    try {
+      const user = await Auth.signIn(formik.values.email, formik.values.password);
+      navigate('/');
+    } catch(error) {
+      setIsDetailsInvalid(() => true);
+      console.log(error);
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -31,7 +53,7 @@ const Signin = () => {
     },
     validationSchema: validSchemaLogin,
     onSubmit: (values) => {
-      console.log(values);
+      setIsDetailsInvalid(() => false);
     }
   });
 
@@ -50,6 +72,16 @@ const Signin = () => {
           <img src={logo} className="App-logo" alt="logo" />
           CALOR
         </Typography>
+        { isDetailsInvalid ?
+        <Alert
+          variant="outlined"
+          severity="error"
+          sx={{ m: 3}}
+        >
+          Couldn't find an account associated with this username or password.
+        </Alert>
+        : null
+        }
         <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -81,6 +113,7 @@ const Signin = () => {
             />
             <Button
               type="submit"
+              onClick={signIn}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}

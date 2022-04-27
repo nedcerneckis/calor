@@ -24,6 +24,7 @@ const Camera = () => {
                 face.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
                 face.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
             } catch (error) {
+                // @ts-ignore
                 clearInterval(drawFaceInterval);
             }
         }, 50);
