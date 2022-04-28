@@ -14,7 +14,7 @@ import logo from '../../logo.svg';
 import React from 'react'
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Link as routerLink, Navigate, useNavigate } from 'react-router-dom';
+import { Link as routerLink, useNavigate } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { useState } from 'react';
 
