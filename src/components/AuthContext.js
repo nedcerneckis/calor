@@ -12,12 +12,9 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         Hub.listen('auth', ({ payload: { event, data } }) => {
-            console.log('Hub listening...');
-            console.log(event)
             switch (event) {
                 case 'signIn':
                     setUser(data);
-                    console.log(data);
                     break;
                 case 'signOut':
                     setUser(null);
@@ -41,14 +38,11 @@ export function AuthProvider({ children }) {
         resendSignUp
     }
 
-    function signUp(email, password, firstName, lastName) {
+    function signUp({username, password, attributes}) {
         return Auth.signUp({
-            username: email,
+            username: username,
             password: password,
-            attributes: {
-                'custom:firstName': firstName,
-                'custom:lastName': lastName
-            }
+            attributes: attributes
         });
 
     }

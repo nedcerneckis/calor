@@ -31,7 +31,7 @@ const Signin = () => {
       .email('Please enter a valid email address.')
       .required('Please enter your email address.'),
     password: yup.string()
-      .min(8, 'Please enter a password with 8 or more characters.')
+      .min(8, 'Must contain a minimum of 8 characters with atleast one uppercase letter and one number.')
       .required('Please enter your password.')
       .matches( /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/, 
         "Must contain a minimum of 8 characters with atleast one uppercase letter and one number."
@@ -47,7 +47,7 @@ const Signin = () => {
 
   const validConfirmationSchemaLogin = yup.object({
     confirmCode: yup.string()
-      .required('Verification code required.')
+      .required('Confirmation code required.')
   });
 
   const signUp = async () => {
@@ -61,7 +61,7 @@ const Signin = () => {
       formik.values.password.length >= 8 &&
       formik.values.password.match( /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
       ) {
-      setEmailUsed(() => formik.values.email);
+      setEmailUsed(formik.values.email);
       try {
         const user = await auth.signUp({
           username: formik.values.email,
@@ -145,7 +145,7 @@ const Signin = () => {
             severity="info"
             sx={{ m: 3}}
           >
-            Please enter the verification code that was sent to <b>{emailUsed}</b>.
+            Please enter the confirmation code that was sent to <b>{emailUsed}</b>.
           </Alert>
           <Box component="form" onSubmit={confirmationFormik.handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -230,8 +230,8 @@ const Signin = () => {
               name="email"
               onChange={formik.handleChange}
               value={formik.values.email}
-              error={Boolean(formik.errors.email)}
-              helperText={formik.errors.email}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
               autoFocus
             />
             <TextField
@@ -242,7 +242,6 @@ const Signin = () => {
               label="First Name"
               name="firstName"
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               value={formik.values.firstName}
               error={formik.touched.firstName && Boolean(formik.errors.firstName)}
               helperText={formik.touched.firstName && formik.errors.firstName}
@@ -288,7 +287,6 @@ const Signin = () => {
               id="confirmPassword"
             />
             <Button
-              disabled={!formik.isValid}
               type="submit"
               onClick={signUp}
               fullWidth

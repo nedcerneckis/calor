@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import Dashboard from './components/Dashboard/Dashboard';
 import Reports from './components/Reports/Reports';
 import Patients from './components/Patients/Patients';
-import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, } from 'react-router-dom';
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import '@aws-amplify/ui-react/styles.css';
 import Signup from './components/Signup/Signup';
 import Signin from './components/Signin/Signin';
