@@ -22,6 +22,7 @@ const Signin = () => {
 
   const [toggle, setToggle] = useState(true);
   const [isInvalidSignup, setIsInvalidSignup] = useState(false);
+  const [isInvalidConfirmationCode, setIsInvalidConfirmationCode] = useState(false);
   const [emailUsed, setEmailUsed] = useState('');
   const auth = useAuth();
   const navigate = useNavigate();
@@ -71,7 +72,6 @@ const Signin = () => {
             'custom:lastName': formik.values.lastName
           }
         });
-        console.log(user);
         setToggle(toggle => !toggle);
       } catch (error) {
         setIsInvalidSignup(true);
@@ -85,8 +85,10 @@ const Signin = () => {
   const verifySignUp = async () => {
     try {
       await auth.confirmSignUp(formik.values.email, confirmationFormik.values.confirmCode);
-      navigate('/signin');
+      await auth.signIn(formik.values.email, formik.values.password);
+      navigate('/');
     } catch (error) {
+      setIsInvalidConfirmationCode(true);
       console.log('Error confirming sign up', error);
     }
   }
@@ -140,13 +142,23 @@ const Signin = () => {
             <img src={logo} className="App-logo" alt="logo" />
             CALOR
           </Typography>
+          { isInvalidConfirmationCode 
+          ?
+          <Alert
+            variant="outlined"
+            severity="error"
+            sx={{ m: 3}}
+          >
+            The confirmation code you have entered is invalid.
+          </Alert>
+          :
           <Alert
             variant="outlined"
             severity="info"
             sx={{ m: 3}}
           >
             Please enter the confirmation code that was sent to <b>{emailUsed}</b>.
-          </Alert>
+          </Alert>}
           <Box component="form" onSubmit={confirmationFormik.handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -174,7 +186,7 @@ const Signin = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <MuiLink onClick={resendVerifyCode}>
+                <MuiLink onClick={resendVerifyCode} sx={{'&:hover': { cursor: 'pointer' }}}>
                   Resend confirmation email.
                 </MuiLink>
               </Grid>
