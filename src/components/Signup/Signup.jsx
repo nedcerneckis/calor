@@ -15,15 +15,15 @@ import React from 'react'
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Link as routerLink, useNavigate } from 'react-router-dom';
-import { Auth } from 'aws-amplify';
 import { useState } from 'react';
+import { useAuth } from '../AuthContext';
 
 const Signin = () => {
 
   const [toggle, setToggle] = useState(true);
   const [isInvalidSignup, setIsInvalidSignup] = useState(false);
   const [emailUsed, setEmailUsed] = useState('');
-
+  const auth = useAuth();
   const navigate = useNavigate();
 
   const validSchemaLogin = yup.object({
@@ -63,7 +63,7 @@ const Signin = () => {
       ) {
       setEmailUsed(() => formik.values.email);
       try {
-        const user = await Auth.signUp({
+        const user = await auth.signUp({
           username: formik.values.email,
           password: formik.values.password,
           attributes: {
@@ -84,7 +84,7 @@ const Signin = () => {
 
   const verifySignUp = async () => {
     try {
-      await Auth.confirmSignUp(formik.values.email, confirmationFormik.values.confirmCode);
+      await auth.confirmSignUp(formik.values.email, confirmationFormik.values.confirmCode);
       navigate('/signin');
     } catch (error) {
       console.log('Error confirming sign up', error);
@@ -93,7 +93,7 @@ const Signin = () => {
 
   const resendVerifyCode = async () => {
     try {
-      await Auth.resendSignUp(formik.values.email);
+      await auth.resendSignUp(formik.values.email);
       console.log(`Code resent succesfully to ${formik.values.email}`);
     } catch (error) {
       console.log('Error signing out: ', error);

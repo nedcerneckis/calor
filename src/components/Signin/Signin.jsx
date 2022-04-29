@@ -10,23 +10,24 @@ import {
   Typography
 } from '@mui/material'
 import logo from '../../logo.svg';
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Link as routerLink, useNavigate } from 'react-router-dom';
-import { Auth } from 'aws-amplify';
+import { useAuth } from '../AuthContext';
 
 const Signin = () => {
 
   const [isDetailsInvalid, setIsDetailsInvalid] = useState(false);
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const signIn = async () => {
     try {
-      const user = await Auth.signIn(formik.values.email, formik.values.password);
-      navigate('/')
+      await auth.signIn(formik.values.email, formik.values.password);
+      navigate('/');
     } catch (error) {
-      setIsDetailsInvalid(() => true);
+      setIsDetailsInvalid(true);
       console.log(error);
     }
   }

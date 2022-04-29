@@ -17,29 +17,20 @@ import InsertChartSharpIcon from '@mui/icons-material/InsertChartSharp';
 import PersonSearchSharpIcon from '@mui/icons-material/PersonSearchSharp';
 import GridViewSharpIcon from '@mui/icons-material/GridViewSharp';
 import LoginIcon from '@mui/icons-material/Login';
-import { Link, Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import logo from '../../logo.svg';
-import { Auth } from 'aws-amplify';
-import { useEffect, useState } from 'react';
+import { useAuth } from '../AuthContext';
 
 const drawerWidth = 300;
 
 const Navbar = () => {
 
-  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await Auth.currentUserInfo();
-      setCurrentUser(user);
-    }
-    fetchUser();
-  }, []);
+  const auth = useAuth();
 
   const signOutUser = async () => {
     try {
-      await Auth.signOut();
+      await auth.signOut();
       navigate('/signin');
     } catch (error) {
       console.log(error);
@@ -58,9 +49,9 @@ const Navbar = () => {
             <img src={logo} className="App-logo" alt="logo" />
             CALOR
           </Typography>
-          {currentUser ?
+          {auth?.user ?
           <Typography variant="body2" sx={{ flexGrow: 1 }}>
-            Welcome, <b>{currentUser?.attributes['custom:firstName']} {currentUser?.attributes['custom:lastName']}</b>.
+            Welcome, <b>{auth?.user.attributes['custom:firstName']} {auth?.user.attributes['custom:lastName']}</b>.
           </Typography>
           : null
           }
@@ -135,7 +126,7 @@ const Navbar = () => {
             </ListItemButton>
           </ListItem>
           <Divider />
-          { currentUser ?
+          { auth?.user ?
           <ListItem 
             onClick={signOutUser}
             disablePadding
