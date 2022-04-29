@@ -32,9 +32,12 @@ const Signin = () => {
       .required('Please enter your email address.'),
     password: yup.string()
       .min(8, 'Please enter a password with 8 or more characters.')
-      .required('Please enter your password.'),
+      .required('Please enter your password.')
+      .matches( /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/, 
+        "Must contain a minimum of 8 characters with atleast one uppercase letter and one number."
+      ),
     confirmPassword: yup.string()
-      .oneOf([yup.ref('password'), ''], 'Passwords do not match!')
+      .oneOf([yup.ref('password'), null], 'Passwords do not match!')
       .required('Please confirm your password.'),
     firstName: yup.string()
       .required('Please enter your first name.'),
@@ -47,7 +50,6 @@ const Signin = () => {
       .required('Verification code required.')
   });
 
-
   const signUp = async () => {
     if (
       formik.values.email && 
@@ -55,7 +57,9 @@ const Signin = () => {
       formik.values.confirmPassword && 
       formik.values.firstName &&
       formik.values.lastName &&
-      formik.values.password === formik.values.confirmPassword
+      formik.values.password === formik.values.confirmPassword &&
+      formik.values.password.length >= 8 &&
+      formik.values.password.match( /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
       ) {
       setEmailUsed(() => formik.values.email);
       try {
@@ -152,6 +156,7 @@ const Signin = () => {
               label="Confirmation Code"
               name="confirmCode"
               onChange={confirmationFormik.handleChange}
+              onBlur={confirmationFormik.handleBlur}
               value={confirmationFormik.values.confirmCode}
               error={confirmationFormik.touched.confirmCode && Boolean(confirmationFormik.errors.confirmCode)}
               helperText={confirmationFormik.touched.confirmCode && confirmationFormik.errors.confirmCode}
@@ -197,7 +202,8 @@ const Signin = () => {
             <img src={logo} className="App-logo" alt="logo" />
             CALOR
           </Typography>
-          { isInvalidSignup ?
+          { isInvalidSignup 
+          ?
           <Alert
             variant="outlined"
             severity="error"
@@ -205,7 +211,14 @@ const Signin = () => {
           >
             An account with the email <b>{emailUsed}</b> is already in use.
           </Alert>
-          : null
+          : 
+          <Alert
+            variant="outlined"
+            severity="info"
+            sx={{ m: 3}}
+          >
+            Your password must contain a minimum of 8 characters, at least one uppercase letter and one number.
+          </Alert>
           }
           <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -217,8 +230,8 @@ const Signin = () => {
               name="email"
               onChange={formik.handleChange}
               value={formik.values.email}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              error={Boolean(formik.errors.email)}
+              helperText={formik.errors.email}
               autoFocus
             />
             <TextField
@@ -229,6 +242,7 @@ const Signin = () => {
               label="First Name"
               name="firstName"
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               value={formik.values.firstName}
               error={formik.touched.firstName && Boolean(formik.errors.firstName)}
               helperText={formik.touched.firstName && formik.errors.firstName}
@@ -274,6 +288,7 @@ const Signin = () => {
               id="confirmPassword"
             />
             <Button
+              disabled={!formik.isValid}
               type="submit"
               onClick={signUp}
               fullWidth
