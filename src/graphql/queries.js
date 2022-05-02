@@ -4,52 +4,41 @@
 export const getPatient = /* GraphQL */ `
   query GetPatient($id: ID!) {
     getPatient(id: $id) {
-      patientId
+      id
       firstName
       surname
       dateOfBirth
       sex
       email
+      therapist
       alcoholUse
       drugUse
+      smokingStatus
       physicalLevel
       dietClass
-      prescribedDrugs {
-        items {
-          drugId
-          drugName
-          dosage
-          description
-          id
-          createdAt
-          updatedAt
-          patientPrescribedDrugsId
-        }
-        nextToken
-      }
       medicalDiagnosis {
         items {
-          diagnosisId
-          diagnosisName
           id
+          diagnosisName
+          diagnosisDescription
           createdAt
           updatedAt
           patientMedicalDiagnosisId
+          owner
         }
         nextToken
       }
       medicalNotes {
         items {
-          medicalNoteId
-          content
           id
+          content
           createdAt
           updatedAt
           patientMedicalNotesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }
@@ -63,26 +52,24 @@ export const listPatients = /* GraphQL */ `
   ) {
     listPatients(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        patientId
+        id
         firstName
         surname
         dateOfBirth
         sex
         email
+        therapist
         alcoholUse
         drugUse
+        smokingStatus
         physicalLevel
         dietClass
-        prescribedDrugs {
-          nextToken
-        }
         medicalDiagnosis {
           nextToken
         }
         medicalNotes {
           nextToken
         }
-        id
         createdAt
         updatedAt
       }
@@ -93,12 +80,35 @@ export const listPatients = /* GraphQL */ `
 export const getDiagnosis = /* GraphQL */ `
   query GetDiagnosis($id: ID!) {
     getDiagnosis(id: $id) {
-      diagnosisId
-      diagnosisName
       id
+      patient {
+        id
+        firstName
+        surname
+        dateOfBirth
+        sex
+        email
+        therapist
+        alcoholUse
+        drugUse
+        smokingStatus
+        physicalLevel
+        dietClass
+        medicalDiagnosis {
+          nextToken
+        }
+        medicalNotes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      diagnosisName
+      diagnosisDescription
       createdAt
       updatedAt
       patientMedicalDiagnosisId
+      owner
     }
   }
 `;
@@ -110,47 +120,29 @@ export const listDiagnoses = /* GraphQL */ `
   ) {
     listDiagnoses(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        diagnosisId
-        diagnosisName
         id
+        patient {
+          id
+          firstName
+          surname
+          dateOfBirth
+          sex
+          email
+          therapist
+          alcoholUse
+          drugUse
+          smokingStatus
+          physicalLevel
+          dietClass
+          createdAt
+          updatedAt
+        }
+        diagnosisName
+        diagnosisDescription
         createdAt
         updatedAt
         patientMedicalDiagnosisId
-      }
-      nextToken
-    }
-  }
-`;
-export const getDrug = /* GraphQL */ `
-  query GetDrug($id: ID!) {
-    getDrug(id: $id) {
-      drugId
-      drugName
-      dosage
-      description
-      id
-      createdAt
-      updatedAt
-      patientPrescribedDrugsId
-    }
-  }
-`;
-export const listDrugs = /* GraphQL */ `
-  query ListDrugs(
-    $filter: ModelDrugFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listDrugs(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        drugId
-        drugName
-        dosage
-        description
-        id
-        createdAt
-        updatedAt
-        patientPrescribedDrugsId
+        owner
       }
       nextToken
     }
@@ -159,36 +151,34 @@ export const listDrugs = /* GraphQL */ `
 export const getMedicalNote = /* GraphQL */ `
   query GetMedicalNote($id: ID!) {
     getMedicalNote(id: $id) {
-      medicalNoteId
-      patientID {
-        patientId
+      id
+      patient {
+        id
         firstName
         surname
         dateOfBirth
         sex
         email
+        therapist
         alcoholUse
         drugUse
+        smokingStatus
         physicalLevel
         dietClass
-        prescribedDrugs {
-          nextToken
-        }
         medicalDiagnosis {
           nextToken
         }
         medicalNotes {
           nextToken
         }
-        id
         createdAt
         updatedAt
       }
       content
-      id
       createdAt
       updatedAt
       patientMedicalNotesId
+      owner
     }
   }
 `;
@@ -200,27 +190,28 @@ export const listMedicalNotes = /* GraphQL */ `
   ) {
     listMedicalNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        medicalNoteId
-        patientID {
-          patientId
+        id
+        patient {
+          id
           firstName
           surname
           dateOfBirth
           sex
           email
+          therapist
           alcoholUse
           drugUse
+          smokingStatus
           physicalLevel
           dietClass
-          id
           createdAt
           updatedAt
         }
         content
-        id
         createdAt
         updatedAt
         patientMedicalNotesId
+        owner
       }
       nextToken
     }

@@ -7,52 +7,41 @@ export const createPatient = /* GraphQL */ `
     $condition: ModelPatientConditionInput
   ) {
     createPatient(input: $input, condition: $condition) {
-      patientId
+      id
       firstName
       surname
       dateOfBirth
       sex
       email
+      therapist
       alcoholUse
       drugUse
+      smokingStatus
       physicalLevel
       dietClass
-      prescribedDrugs {
-        items {
-          drugId
-          drugName
-          dosage
-          description
-          id
-          createdAt
-          updatedAt
-          patientPrescribedDrugsId
-        }
-        nextToken
-      }
       medicalDiagnosis {
         items {
-          diagnosisId
-          diagnosisName
           id
+          diagnosisName
+          diagnosisDescription
           createdAt
           updatedAt
           patientMedicalDiagnosisId
+          owner
         }
         nextToken
       }
       medicalNotes {
         items {
-          medicalNoteId
-          content
           id
+          content
           createdAt
           updatedAt
           patientMedicalNotesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }
@@ -64,52 +53,41 @@ export const updatePatient = /* GraphQL */ `
     $condition: ModelPatientConditionInput
   ) {
     updatePatient(input: $input, condition: $condition) {
-      patientId
+      id
       firstName
       surname
       dateOfBirth
       sex
       email
+      therapist
       alcoholUse
       drugUse
+      smokingStatus
       physicalLevel
       dietClass
-      prescribedDrugs {
-        items {
-          drugId
-          drugName
-          dosage
-          description
-          id
-          createdAt
-          updatedAt
-          patientPrescribedDrugsId
-        }
-        nextToken
-      }
       medicalDiagnosis {
         items {
-          diagnosisId
-          diagnosisName
           id
+          diagnosisName
+          diagnosisDescription
           createdAt
           updatedAt
           patientMedicalDiagnosisId
+          owner
         }
         nextToken
       }
       medicalNotes {
         items {
-          medicalNoteId
-          content
           id
+          content
           createdAt
           updatedAt
           patientMedicalNotesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }
@@ -121,52 +99,41 @@ export const deletePatient = /* GraphQL */ `
     $condition: ModelPatientConditionInput
   ) {
     deletePatient(input: $input, condition: $condition) {
-      patientId
+      id
       firstName
       surname
       dateOfBirth
       sex
       email
+      therapist
       alcoholUse
       drugUse
+      smokingStatus
       physicalLevel
       dietClass
-      prescribedDrugs {
-        items {
-          drugId
-          drugName
-          dosage
-          description
-          id
-          createdAt
-          updatedAt
-          patientPrescribedDrugsId
-        }
-        nextToken
-      }
       medicalDiagnosis {
         items {
-          diagnosisId
-          diagnosisName
           id
+          diagnosisName
+          diagnosisDescription
           createdAt
           updatedAt
           patientMedicalDiagnosisId
+          owner
         }
         nextToken
       }
       medicalNotes {
         items {
-          medicalNoteId
-          content
           id
+          content
           createdAt
           updatedAt
           patientMedicalNotesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }
@@ -178,12 +145,35 @@ export const createDiagnosis = /* GraphQL */ `
     $condition: ModelDiagnosisConditionInput
   ) {
     createDiagnosis(input: $input, condition: $condition) {
-      diagnosisId
-      diagnosisName
       id
+      patient {
+        id
+        firstName
+        surname
+        dateOfBirth
+        sex
+        email
+        therapist
+        alcoholUse
+        drugUse
+        smokingStatus
+        physicalLevel
+        dietClass
+        medicalDiagnosis {
+          nextToken
+        }
+        medicalNotes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      diagnosisName
+      diagnosisDescription
       createdAt
       updatedAt
       patientMedicalDiagnosisId
+      owner
     }
   }
 `;
@@ -193,12 +183,35 @@ export const updateDiagnosis = /* GraphQL */ `
     $condition: ModelDiagnosisConditionInput
   ) {
     updateDiagnosis(input: $input, condition: $condition) {
-      diagnosisId
-      diagnosisName
       id
+      patient {
+        id
+        firstName
+        surname
+        dateOfBirth
+        sex
+        email
+        therapist
+        alcoholUse
+        drugUse
+        smokingStatus
+        physicalLevel
+        dietClass
+        medicalDiagnosis {
+          nextToken
+        }
+        medicalNotes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      diagnosisName
+      diagnosisDescription
       createdAt
       updatedAt
       patientMedicalDiagnosisId
+      owner
     }
   }
 `;
@@ -208,63 +221,35 @@ export const deleteDiagnosis = /* GraphQL */ `
     $condition: ModelDiagnosisConditionInput
   ) {
     deleteDiagnosis(input: $input, condition: $condition) {
-      diagnosisId
-      diagnosisName
       id
+      patient {
+        id
+        firstName
+        surname
+        dateOfBirth
+        sex
+        email
+        therapist
+        alcoholUse
+        drugUse
+        smokingStatus
+        physicalLevel
+        dietClass
+        medicalDiagnosis {
+          nextToken
+        }
+        medicalNotes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      diagnosisName
+      diagnosisDescription
       createdAt
       updatedAt
       patientMedicalDiagnosisId
-    }
-  }
-`;
-export const createDrug = /* GraphQL */ `
-  mutation CreateDrug(
-    $input: CreateDrugInput!
-    $condition: ModelDrugConditionInput
-  ) {
-    createDrug(input: $input, condition: $condition) {
-      drugId
-      drugName
-      dosage
-      description
-      id
-      createdAt
-      updatedAt
-      patientPrescribedDrugsId
-    }
-  }
-`;
-export const updateDrug = /* GraphQL */ `
-  mutation UpdateDrug(
-    $input: UpdateDrugInput!
-    $condition: ModelDrugConditionInput
-  ) {
-    updateDrug(input: $input, condition: $condition) {
-      drugId
-      drugName
-      dosage
-      description
-      id
-      createdAt
-      updatedAt
-      patientPrescribedDrugsId
-    }
-  }
-`;
-export const deleteDrug = /* GraphQL */ `
-  mutation DeleteDrug(
-    $input: DeleteDrugInput!
-    $condition: ModelDrugConditionInput
-  ) {
-    deleteDrug(input: $input, condition: $condition) {
-      drugId
-      drugName
-      dosage
-      description
-      id
-      createdAt
-      updatedAt
-      patientPrescribedDrugsId
+      owner
     }
   }
 `;
@@ -274,36 +259,34 @@ export const createMedicalNote = /* GraphQL */ `
     $condition: ModelMedicalNoteConditionInput
   ) {
     createMedicalNote(input: $input, condition: $condition) {
-      medicalNoteId
-      patientID {
-        patientId
+      id
+      patient {
+        id
         firstName
         surname
         dateOfBirth
         sex
         email
+        therapist
         alcoholUse
         drugUse
+        smokingStatus
         physicalLevel
         dietClass
-        prescribedDrugs {
-          nextToken
-        }
         medicalDiagnosis {
           nextToken
         }
         medicalNotes {
           nextToken
         }
-        id
         createdAt
         updatedAt
       }
       content
-      id
       createdAt
       updatedAt
       patientMedicalNotesId
+      owner
     }
   }
 `;
@@ -313,36 +296,34 @@ export const updateMedicalNote = /* GraphQL */ `
     $condition: ModelMedicalNoteConditionInput
   ) {
     updateMedicalNote(input: $input, condition: $condition) {
-      medicalNoteId
-      patientID {
-        patientId
+      id
+      patient {
+        id
         firstName
         surname
         dateOfBirth
         sex
         email
+        therapist
         alcoholUse
         drugUse
+        smokingStatus
         physicalLevel
         dietClass
-        prescribedDrugs {
-          nextToken
-        }
         medicalDiagnosis {
           nextToken
         }
         medicalNotes {
           nextToken
         }
-        id
         createdAt
         updatedAt
       }
       content
-      id
       createdAt
       updatedAt
       patientMedicalNotesId
+      owner
     }
   }
 `;
@@ -352,36 +333,34 @@ export const deleteMedicalNote = /* GraphQL */ `
     $condition: ModelMedicalNoteConditionInput
   ) {
     deleteMedicalNote(input: $input, condition: $condition) {
-      medicalNoteId
-      patientID {
-        patientId
+      id
+      patient {
+        id
         firstName
         surname
         dateOfBirth
         sex
         email
+        therapist
         alcoholUse
         drugUse
+        smokingStatus
         physicalLevel
         dietClass
-        prescribedDrugs {
-          nextToken
-        }
         medicalDiagnosis {
           nextToken
         }
         medicalNotes {
           nextToken
         }
-        id
         createdAt
         updatedAt
       }
       content
-      id
       createdAt
       updatedAt
       patientMedicalNotesId
+      owner
     }
   }
 `;

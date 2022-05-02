@@ -3,6 +3,7 @@ import * as face from 'face-api.js';
 import Switch from '@mui/material/Switch';
 import './Camera.css';
 import Webcam from 'react-webcam';
+import { Card, CardContent } from '@mui/material';
 
 const Camera = () => {
     const camHeight = 720;
@@ -34,7 +35,7 @@ const Camera = () => {
 
     const handleChange = (event) => {
         setChecked(event.target.checked);
-      };
+    };
 
     useEffect(() => {
         if (checked) {
@@ -48,7 +49,7 @@ const Camera = () => {
                 ]);
             }
             initModels();
-        }    
+        }
     }, [checked]);
 
     const faceAnalysis = () => {
@@ -57,24 +58,26 @@ const Camera = () => {
     }
 
     return (
-        <div className="analysis">
-            <Switch
-                checked={checked}
-                onChange={handleChange}
-                inputProps={{ 'aria-label': 'controlled' }}
-            />
-            { checked ?  
-            <div className="camera">
-                <Webcam 
-                    ref={videoRef} 
-                    videoConstraints={displaySize}
-                    onUserMedia={faceAnalysis} 
-
+        <Card className="analysis" sx={{ height: '85vh', width: '100%' }}>
+            <CardContent sx={{ display: 'flex' }}>
+                <Switch
+                    checked={checked}
+                    onChange={handleChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
                 />
-                <canvas ref={canvasRef} />
-            </div>
-            : null}
-        </div>
+                {checked ?
+                    <div className="camera">
+                        <Webcam
+                            ref={videoRef}
+                            videoConstraints={displaySize}
+                            onUserMedia={faceAnalysis}
+
+                        />
+                        <canvas ref={canvasRef} />
+                    </div>
+                    : null}
+            </CardContent>
+        </Card>
     )
 }
 

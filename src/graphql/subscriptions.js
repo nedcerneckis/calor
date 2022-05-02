@@ -2,350 +2,338 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreatePatient = /* GraphQL */ `
-  subscription OnCreatePatient {
-    onCreatePatient {
-      patientId
+  subscription OnCreatePatient($therapist: String) {
+    onCreatePatient(therapist: $therapist) {
+      id
       firstName
       surname
       dateOfBirth
       sex
       email
+      therapist
       alcoholUse
       drugUse
+      smokingStatus
       physicalLevel
       dietClass
-      prescribedDrugs {
-        items {
-          drugId
-          drugName
-          dosage
-          description
-          id
-          createdAt
-          updatedAt
-          patientPrescribedDrugsId
-        }
-        nextToken
-      }
       medicalDiagnosis {
         items {
-          diagnosisId
-          diagnosisName
           id
+          diagnosisName
+          diagnosisDescription
           createdAt
           updatedAt
           patientMedicalDiagnosisId
+          owner
         }
         nextToken
       }
       medicalNotes {
         items {
-          medicalNoteId
-          content
           id
+          content
           createdAt
           updatedAt
           patientMedicalNotesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }
   }
 `;
 export const onUpdatePatient = /* GraphQL */ `
-  subscription OnUpdatePatient {
-    onUpdatePatient {
-      patientId
+  subscription OnUpdatePatient($therapist: String) {
+    onUpdatePatient(therapist: $therapist) {
+      id
       firstName
       surname
       dateOfBirth
       sex
       email
+      therapist
       alcoholUse
       drugUse
+      smokingStatus
       physicalLevel
       dietClass
-      prescribedDrugs {
-        items {
-          drugId
-          drugName
-          dosage
-          description
-          id
-          createdAt
-          updatedAt
-          patientPrescribedDrugsId
-        }
-        nextToken
-      }
       medicalDiagnosis {
         items {
-          diagnosisId
-          diagnosisName
           id
+          diagnosisName
+          diagnosisDescription
           createdAt
           updatedAt
           patientMedicalDiagnosisId
+          owner
         }
         nextToken
       }
       medicalNotes {
         items {
-          medicalNoteId
-          content
           id
+          content
           createdAt
           updatedAt
           patientMedicalNotesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }
   }
 `;
 export const onDeletePatient = /* GraphQL */ `
-  subscription OnDeletePatient {
-    onDeletePatient {
-      patientId
+  subscription OnDeletePatient($therapist: String) {
+    onDeletePatient(therapist: $therapist) {
+      id
       firstName
       surname
       dateOfBirth
       sex
       email
+      therapist
       alcoholUse
       drugUse
+      smokingStatus
       physicalLevel
       dietClass
-      prescribedDrugs {
-        items {
-          drugId
-          drugName
-          dosage
-          description
-          id
-          createdAt
-          updatedAt
-          patientPrescribedDrugsId
-        }
-        nextToken
-      }
       medicalDiagnosis {
         items {
-          diagnosisId
-          diagnosisName
           id
+          diagnosisName
+          diagnosisDescription
           createdAt
           updatedAt
           patientMedicalDiagnosisId
+          owner
         }
         nextToken
       }
       medicalNotes {
         items {
-          medicalNoteId
-          content
           id
+          content
           createdAt
           updatedAt
           patientMedicalNotesId
+          owner
         }
         nextToken
       }
-      id
       createdAt
       updatedAt
     }
   }
 `;
 export const onCreateDiagnosis = /* GraphQL */ `
-  subscription OnCreateDiagnosis {
-    onCreateDiagnosis {
-      diagnosisId
-      diagnosisName
+  subscription OnCreateDiagnosis($owner: String) {
+    onCreateDiagnosis(owner: $owner) {
       id
+      patient {
+        id
+        firstName
+        surname
+        dateOfBirth
+        sex
+        email
+        therapist
+        alcoholUse
+        drugUse
+        smokingStatus
+        physicalLevel
+        dietClass
+        medicalDiagnosis {
+          nextToken
+        }
+        medicalNotes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      diagnosisName
+      diagnosisDescription
       createdAt
       updatedAt
       patientMedicalDiagnosisId
+      owner
     }
   }
 `;
 export const onUpdateDiagnosis = /* GraphQL */ `
-  subscription OnUpdateDiagnosis {
-    onUpdateDiagnosis {
-      diagnosisId
-      diagnosisName
+  subscription OnUpdateDiagnosis($owner: String) {
+    onUpdateDiagnosis(owner: $owner) {
       id
+      patient {
+        id
+        firstName
+        surname
+        dateOfBirth
+        sex
+        email
+        therapist
+        alcoholUse
+        drugUse
+        smokingStatus
+        physicalLevel
+        dietClass
+        medicalDiagnosis {
+          nextToken
+        }
+        medicalNotes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      diagnosisName
+      diagnosisDescription
       createdAt
       updatedAt
       patientMedicalDiagnosisId
+      owner
     }
   }
 `;
 export const onDeleteDiagnosis = /* GraphQL */ `
-  subscription OnDeleteDiagnosis {
-    onDeleteDiagnosis {
-      diagnosisId
-      diagnosisName
+  subscription OnDeleteDiagnosis($owner: String) {
+    onDeleteDiagnosis(owner: $owner) {
       id
+      patient {
+        id
+        firstName
+        surname
+        dateOfBirth
+        sex
+        email
+        therapist
+        alcoholUse
+        drugUse
+        smokingStatus
+        physicalLevel
+        dietClass
+        medicalDiagnosis {
+          nextToken
+        }
+        medicalNotes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      diagnosisName
+      diagnosisDescription
       createdAt
       updatedAt
       patientMedicalDiagnosisId
-    }
-  }
-`;
-export const onCreateDrug = /* GraphQL */ `
-  subscription OnCreateDrug {
-    onCreateDrug {
-      drugId
-      drugName
-      dosage
-      description
-      id
-      createdAt
-      updatedAt
-      patientPrescribedDrugsId
-    }
-  }
-`;
-export const onUpdateDrug = /* GraphQL */ `
-  subscription OnUpdateDrug {
-    onUpdateDrug {
-      drugId
-      drugName
-      dosage
-      description
-      id
-      createdAt
-      updatedAt
-      patientPrescribedDrugsId
-    }
-  }
-`;
-export const onDeleteDrug = /* GraphQL */ `
-  subscription OnDeleteDrug {
-    onDeleteDrug {
-      drugId
-      drugName
-      dosage
-      description
-      id
-      createdAt
-      updatedAt
-      patientPrescribedDrugsId
+      owner
     }
   }
 `;
 export const onCreateMedicalNote = /* GraphQL */ `
-  subscription OnCreateMedicalNote {
-    onCreateMedicalNote {
-      medicalNoteId
-      patientID {
-        patientId
+  subscription OnCreateMedicalNote($owner: String) {
+    onCreateMedicalNote(owner: $owner) {
+      id
+      patient {
+        id
         firstName
         surname
         dateOfBirth
         sex
         email
+        therapist
         alcoholUse
         drugUse
+        smokingStatus
         physicalLevel
         dietClass
-        prescribedDrugs {
-          nextToken
-        }
         medicalDiagnosis {
           nextToken
         }
         medicalNotes {
           nextToken
         }
-        id
         createdAt
         updatedAt
       }
       content
-      id
       createdAt
       updatedAt
       patientMedicalNotesId
+      owner
     }
   }
 `;
 export const onUpdateMedicalNote = /* GraphQL */ `
-  subscription OnUpdateMedicalNote {
-    onUpdateMedicalNote {
-      medicalNoteId
-      patientID {
-        patientId
+  subscription OnUpdateMedicalNote($owner: String) {
+    onUpdateMedicalNote(owner: $owner) {
+      id
+      patient {
+        id
         firstName
         surname
         dateOfBirth
         sex
         email
+        therapist
         alcoholUse
         drugUse
+        smokingStatus
         physicalLevel
         dietClass
-        prescribedDrugs {
-          nextToken
-        }
         medicalDiagnosis {
           nextToken
         }
         medicalNotes {
           nextToken
         }
-        id
         createdAt
         updatedAt
       }
       content
-      id
       createdAt
       updatedAt
       patientMedicalNotesId
+      owner
     }
   }
 `;
 export const onDeleteMedicalNote = /* GraphQL */ `
-  subscription OnDeleteMedicalNote {
-    onDeleteMedicalNote {
-      medicalNoteId
-      patientID {
-        patientId
+  subscription OnDeleteMedicalNote($owner: String) {
+    onDeleteMedicalNote(owner: $owner) {
+      id
+      patient {
+        id
         firstName
         surname
         dateOfBirth
         sex
         email
+        therapist
         alcoholUse
         drugUse
+        smokingStatus
         physicalLevel
         dietClass
-        prescribedDrugs {
-          nextToken
-        }
         medicalDiagnosis {
           nextToken
         }
         medicalNotes {
           nextToken
         }
-        id
         createdAt
         updatedAt
       }
       content
-      id
       createdAt
       updatedAt
       patientMedicalNotesId
+      owner
     }
   }
 `;

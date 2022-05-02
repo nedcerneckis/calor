@@ -2,36 +2,38 @@
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
-type Patient @model {
-  patientId: ID!
+type Patient @model @auth(rules: [
+  { allow: owner, ownerField: "therapist" }
+  ]) {
+  id: ID!
   firstName: String!
   surname: String!
   dateOfBirth: String!
   sex: String!
   email: String! 
+  therapist: String 
   alcoholUse: String!
   drugUse: String!
+  smokingStatus: String!
   physicalLevel: String!
   dietClass: String!
-  prescribedDrugs: [Drug] @hasMany
   medicalDiagnosis: [Diagnosis] @hasMany
   medicalNotes: [MedicalNote] @hasMany
 }
 
-type Diagnosis @model {
-  diagnosisId: ID!
+type Diagnosis @model @auth(rules: [
+  { allow: owner }
+  ]) {
+  id: ID!
+  patient: Patient @belongsTo
   diagnosisName: String!
+  diagnosisDescription: String!
 }
 
-type Drug @model {
-  drugId: ID!
-  drugName: String!
-  dosage: String!
-  description: String
-}
-
-type MedicalNote @model {
-  medicalNoteId: ID!
-  patientID: Patient @belongsTo
+type MedicalNote @model @auth(rules: [
+  { allow: owner }
+  ]) {
+  id: ID!
+  patient: Patient @belongsTo
   content: String!
 }

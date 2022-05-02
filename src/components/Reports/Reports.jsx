@@ -4,8 +4,8 @@ import React from 'react';
 const Reports = () => {
 
   return (
-    <Card sx={{ minWidth: 200, minHeight: 600 }}>
-      <CardContent sx={{ alignItems: 'center' }}>
+    <Card sx={{ height: '85vh', width: '100%' }}>
+      <CardContent sx={{ display: 'flex', height: '95%' }}>
         <Typography>
           Reports
         </Typography>

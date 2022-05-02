@@ -1,11 +1,11 @@
 import { Card, CardContent, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Dashboard = () => {
 
   return (
-    <Card sx={{ minWidth: 200, minHeight: 600 }}>
-      <CardContent sx={{ alignItems: 'center' }}>
+    <Card sx={{ height: '85vh', width: '100%' }}>
+      <CardContent sx={{ display: 'flex', height: '95%' }}>
         <Typography>
           Dashboard
         </Typography>
