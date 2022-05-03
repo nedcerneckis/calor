@@ -1,27 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Navbar from './components/Navbar/Navbar';
 import Dashboard from './components/Dashboard/Dashboard';
 import Reports from './components/Reports/Reports';
 import Patients from './components/Patients/Patients';
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import '@aws-amplify/ui-react/styles.css';
 import Signup from './components/Signup/Signup';
 import Signin from './components/Signin/Signin';
 import Camera from './components/Camera/Camera';
-import { AuthProvider, useAuth } from './components/AuthContext';
+import { AuthProvider } from './components/AuthContext';
 import './App.css';
+import { PrivateOutlet } from './components/PrivateOutlet';
 
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   }
 });
-
-function PrivateOutlet() {
-  const { user } = useAuth();
-  return user ? <Outlet /> : <Navigate to="/signin" />;
-}
 
 const App = () => {
 

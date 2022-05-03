@@ -1,4 +1,5 @@
 import { Card, CardContent, Typography } from '@mui/material';
+import { Auth } from 'aws-amplify';
 import React, { useEffect } from 'react';
 
 const Dashboard = () => {

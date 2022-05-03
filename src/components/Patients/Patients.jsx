@@ -17,6 +17,7 @@ const Patients = () => {
 
   const [patients, setPatients] = useState([]);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   useEffect(() => {
     fetchPatients();
@@ -53,7 +54,6 @@ const Patients = () => {
     onSubmit: () => {
       addPatient();
       setIsCreateOpen(false);
-      fetchPatients();
     }
   });
 
@@ -72,28 +72,35 @@ const Patients = () => {
     },
     validationSchema: validPatientSchema,
     onSubmit: (values) => {
-      console.log("EDIT");
-      console.log(values);
+      editPatient(values);
+      setIsEditOpen(false);
     }
   });
 
-  const onOpen = () => {
+  const onCreateOpen = () => {
     setIsCreateOpen(true);
   };
 
-  const onClose = () => {
+  const onCreateClose = () => {
     setIsCreateOpen(false);
   };
+
+  const onEditClose = () => {
+    setIsEditOpen(false);
+  }
 
   const onView = (currentCell) => {
     console.log(currentCell);
   }
 
   const onEdit = (currentCell) => {
-    console.log(currentCell);
+    console.log(currentCell.row);
+    editFormik.setValues(currentCell.row);
+    setIsEditOpen(true);
   }
 
-  const onDelete = async (id) => {
+  // ASYNC FUNCTIONS
+  const deletePatient = async (id) => {
     await API.graphql({
       query: mutations.deletePatient,
       variables: { input: {id} },
@@ -102,8 +109,7 @@ const Patients = () => {
     fetchPatients();
   }
 
-
-  async function fetchPatients() {
+  const fetchPatients = async () => {
     try {
       const patientData = await API.graphql({
         query: queries.listPatients,
@@ -115,14 +121,30 @@ const Patients = () => {
     }
   }
 
-  async function addPatient() {
+  const editPatient = async (patient) => {
+    const { medicalNotes, medicalDiagnosis, createdAt, updatedAt, ...rest } = patient;
+    const patientToEdit = rest;
+    console.log(patientToEdit)
+    try {
+      await API.graphql({
+        query: mutations.updatePatient,
+        variables: { input: patientToEdit },
+        authMode: 'AMAZON_COGNITO_USER_POOLS'
+      });
+      fetchPatients();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const addPatient = async () => {
     const patientToCreate = {
       ...createFormik.values,
       dateOfBirth: createFormik.values.dateOfBirth.toISOString().substring(0, 10)
     }
 
     try {
-      const patientData = await API.graphql({
+      await API.graphql({
         query: mutations.createPatient,
         variables: { input: patientToCreate },
         authMode: 'AMAZON_COGNITO_USER_POOLS'
@@ -132,6 +154,7 @@ const Patients = () => {
       console.log(err);
     }
   }
+  // END OF ASYNC FUNCTIONS 
 
   const columns = [
     {
@@ -150,6 +173,7 @@ const Patients = () => {
       field: "dateOfBirth",
       headerName: "Date of Birth",
       flex: 1,
+      minWidth: 100,
       editable: true
     },
     {
@@ -198,6 +222,7 @@ const Patients = () => {
       field: "actions",
       headerName: "Actions",
       flex: 1,
+      minwidth: 120,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (currentCell) => {
@@ -222,7 +247,7 @@ const Patients = () => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton onClick={() => onDelete(currentCell.id)}>
+              <IconButton onClick={() => deletePatient(currentCell.id)}>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
@@ -234,8 +259,8 @@ const Patients = () => {
 
   const editPatientModal = (
     <Modal
-      open={isCreateOpen}
-      onClose={onClose}
+      open={isEditOpen}
+      onClose={onEditClose}
     >
       <Box
         component="form"
@@ -255,7 +280,7 @@ const Patients = () => {
         }}
       >
         <Typography variant="h6" gutterBottom>
-          Add a Patient
+          Edit Patient
         </Typography>
         <Grid container spacing={5}>
           <Grid item xs={12} sm={6}>
@@ -435,7 +460,7 @@ const Patients = () => {
             </TextField>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Button onClick={onClose} >Back</Button>
+            <Button onClick={onEditClose} >Back</Button>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Button
@@ -454,7 +479,7 @@ const Patients = () => {
   const addPatientModal = (
     <Modal
       open={isCreateOpen}
-      onClose={onClose}
+      onClose={onCreateClose}
     >
       <Box
         component="form"
@@ -654,7 +679,7 @@ const Patients = () => {
             </TextField>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Button onClick={onClose} >Back</Button>
+            <Button onClick={onCreateClose} >Back</Button>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Button
@@ -671,9 +696,10 @@ const Patients = () => {
 
   return (
     <Card sx={{ height: '85vh', width: '100%' }}>
-      <Button onClick={onOpen} variant="contained" color="success">Add patient</Button>
+      <Button onClick={onCreateOpen} variant="contained" color="success">Add patient</Button>
       <CardContent sx={{ display: 'flex', height: '95%' }}>
         { addPatientModal } 
+        { editPatientModal } 
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
             disableSelectionOnClick

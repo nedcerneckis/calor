@@ -11,6 +11,8 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState();
 
     useEffect(() => {
+        checkIfUserIsAuthenticated();
+
         Hub.listen('auth', ({ payload: { event, data } }) => {
             switch (event) {
                 case 'signIn':
@@ -28,6 +30,11 @@ export function AuthProvider({ children }) {
             Hub.remove('auth', () => console.log('Hub not listening...'));
         }   
     }, []);
+
+    const checkIfUserIsAuthenticated = async () => {
+        const user = await Auth.currentAuthenticatedUser();
+        setUser(user);
+    }
 
     const value = {
         user,
