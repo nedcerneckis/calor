@@ -702,6 +702,7 @@ const Patients = () => {
         { editPatientModal } 
         <Box sx={{ flexGrow: 1 }}>
           <DataGrid
+            isCellEditable={() => false}
             disableSelectionOnClick
             rows={patients}
             columns={columns}

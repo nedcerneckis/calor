@@ -1,0 +1,14 @@
+{
+  "resourceName": "videoStorage",
+  "policyUUID": "3a5555f3",
+  "bucketName": "videostoragebucket",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "S3Trigger9b09e867",
+  "groupAccess": {}
+}

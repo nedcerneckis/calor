@@ -88,19 +88,6 @@ const Navbar = () => {
           <Divider />
           <ListItem 
             component={Link} 
-            to="/dashboard" 
-            disablePadding
-            style={{ color: 'inherit', textDecoration: 'inherit'}}
-          >
-            <ListItemButton>
-              <ListItemIcon>
-                <GridViewSharpIcon />
-              </ListItemIcon>
-              <ListItemText primary="Dashboard" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem 
-            component={Link} 
             to="/patients" 
             disablePadding
             style={{ color: 'inherit', textDecoration: 'inherit'}}
