@@ -1,14 +1,8 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"8.0.2\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+    "Description": "Lambda resource stack creation using Amplify CLI",
     "Parameters": {
         "env": {
-            "Type": "String"
-        },
-        "deploymentBucketName": {
-            "Type": "String"
-        },
-        "s3Key": {
             "Type": "String"
         }
     },
@@ -34,12 +28,12 @@
                 "FunctionName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
-                        "S3Trigger9b09e867",
+                        "S3Triggera7f76b6a",
                         {
                             "Fn::Join": [
                                 "",
                                 [
-                                    "S3Trigger9b09e867",
+                                    "S3Triggera7f76b6a",
                                     "-",
                                     {
                                         "Ref": "env"
@@ -63,15 +57,7 @@
                     ]
                 },
                 "Runtime": "nodejs14.x",
-                "Timeout": 25,
-                "Code": {
-                    "S3Bucket": {
-                        "Ref": "deploymentBucketName"
-                    },
-                    "S3Key": {
-                        "Ref": "s3Key"
-                    }
-                }
+                "Timeout": 25
             }
         },
         "LambdaExecutionRole": {
@@ -80,12 +66,12 @@
                 "RoleName": {
                     "Fn::If": [
                         "ShouldNotCreateEnvResources",
-                        "S3Trigger9b09e867LambdaRole9b09e867",
+                        "S3Triggera7f76b6aLambdaRolea7f76b6a",
                         {
                             "Fn::Join": [
                                 "",
                                 [
-                                    "S3Trigger9b09e867LambdaRole9b09e867",
+                                    "S3Triggera7f76b6aLambdaRolea7f76b6a",
                                     "-",
                                     {
                                         "Ref": "env"

@@ -1,34 +1,86 @@
 import React, { useEffect, useState, useRef } from 'react'
 import * as face from 'face-api.js';
 import './Camera.css';
-import { Storage } from 'aws-amplify';
+import { API, Predictions, Storage } from 'aws-amplify';
 import Webcam from 'react-webcam';
-import { Box, Button, Card, CardContent, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, MenuItem, TextField, Typography } from '@mui/material';
 import { ReactMediaRecorder } from 'react-media-recorder';
 import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
+import * as queries from '../../graphql/queries';
 
 const Camera = () => {
   const camHeight = 720;
   const camWidth = 1280;
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [age, setAge] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const [cumulativeExpression, setCumulativeExpression] = useState(null);
   const displaySize = {
     width: camWidth,
     height: camHeight
   }
-  const [patient, setPatient] = useState(null);
+  const [patient, setPatient] = useState({
+    id: '',
+    firstName: '',
+    surname: '',
+    dateOfBirth: null,
+    sex: '',
+    email: '',
+    alcoholUse: '',
+    drugUse: '',
+    physicalLevel: '',
+    smokingStatus: '',
+    dietClass: '',
+  });
+  const [patients, setPatients] = useState([]);
+  const [stopWebcam, setStopWebcam] = useState(false);
   const navigate = useNavigate();
 
-  const handleAgeChange = (event) => {
-    setAge(event.target.value);
+  const handlePatientSelect = (event) => {
+    setPatient(event.target.value);
   };
 
+  const fetchPatients = async () => {
+    try {
+      const patientData = await API.graphql({
+        query: queries.listPatients,
+        authMode: 'AMAZON_COGNITO_USER_POOLS'
+      });
+      setPatients(patientData.data.listPatients.items);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const addUpExpressionValues = (predictionArray) => {
+    const cumulativeSum = {
+      angry: 0,
+      disgusted: 0,
+      fearful: 0,
+      happy: 0,
+      neutral: 0,
+      sad: 0,
+      surprised: 0
+    }
+
+    predictionArray.forEach((prediction) => {
+      cumulativeSum.angry += prediction.angry;
+      cumulativeSum.disgusted += prediction.disgusted;
+      cumulativeSum.fearful += prediction.fearful;
+      cumulativeSum.happy += prediction.happy;
+      cumulativeSum.neutral += prediction.neutral;
+      cumulativeSum.sad += prediction.sad;
+      cumulativeSum.surprised += prediction.surprised;
+    });
+
+    return cumulativeSum;
+  }
 
   const drawFaceInterval = () => {
+    let allPredictionsOfSession = [];
     setInterval(async () => {
       try {
         const detections = await face.detectAllFaces(videoRef.current.video, new face.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
@@ -37,6 +89,12 @@ const Camera = () => {
         face.draw.drawDetections(canvasRef.current, resizedDetections);
         face.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
         face.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
+        if (isRecording) {
+          const [destructuredDetection] = detections;
+          const { expressions } = destructuredDetection;
+          allPredictionsOfSession.push(expressions);
+          setCumulativeExpression(addUpExpressionValues(allPredictionsOfSession));
+        }
       } catch (error) {
         // @ts-ignore
         clearInterval(drawFaceInterval);
@@ -56,9 +114,17 @@ const Camera = () => {
 
   useEffect(() => {
     try {
+      fetchPatients();
       initModels();
     } catch (err) {
       console.log(err);
+    }
+
+    return () => {
+      setStopWebcam(true);
+      // @ts-ignore
+      clearInterval(drawFaceInterval);
+      console.log('unmount');
     }
   }, []);
 
@@ -67,23 +133,38 @@ const Camera = () => {
     drawFaceInterval();
   }
 
+  const startAndSetRecording = (startRecording) => {
+    setIsRecording(true);
+    startRecording()
+  }
+
+  const stopAndSetRecording = (stopRecording) => {
+    setIsRecording(false);
+    stopRecording()
+  }
+
   const videoPlayback = ({ startRecording, stopRecording, status, mediaBlobUrl }) => {
     switch (status) {
       case 'idle':
         return (
           <>
-            <Button onClick={startRecording} variant="contained" color="success" endIcon={<PlayArrowIcon />}>
+            <Typography sx={{ margin: 2 }}>Patient: {patient.firstName} {patient.surname} </Typography>
+            <Button onClick={() => startAndSetRecording(startRecording)} variant="contained" color="success" endIcon={<PlayArrowIcon />}>
               Start Recording
             </Button>
-            <Box className="camera">
-              <Webcam
-                ref={videoRef}
-                videoConstraints={displaySize}
-                onUserMedia={faceAnalysis}
+            {
+              stopWebcam ?
+                null
+                :
+                <Box className="camera">
+                  <Webcam
+                    ref={videoRef}
+                    videoConstraints={displaySize}
+                    onUserMedia={faceAnalysis}
 
-              />
-              <canvas ref={canvasRef} />
-            </Box>
+                  />
+                </Box>
+            }
           </>
         );
       case 'stopped':
@@ -111,16 +192,20 @@ const Camera = () => {
       default:
         return (
           <>
-            <Button onClick={stopRecording} endIcon={<StopIcon />} variant="contained" color="error">Stop Recording</Button>
-            <Box className="camera">
-              <Webcam
-                ref={videoRef}
-                videoConstraints={displaySize}
-                onUserMedia={faceAnalysis}
-
-              />
-              <canvas ref={canvasRef} />
-            </Box>
+            <Button onClick={() => stopAndSetRecording(stopRecording)} endIcon={<StopIcon />} variant="contained" color="error">Stop Recording</Button>
+            {
+              stopWebcam ?
+                null
+                :
+                <Box className="camera">
+                  <Webcam
+                    ref={videoRef}
+                    videoConstraints={displaySize}
+                    onUserMedia={faceAnalysis}
+                  />
+                  <canvas ref={canvasRef} />
+                </Box>
+            }
           </>
         );
     }
@@ -128,17 +213,27 @@ const Camera = () => {
 
   const onS3Upload = async (file) => {
     const mediaBlob = await fetch(file).then(response => response.blob());
+    console.log(cumulativeExpression);
 
-    const myFile = new File([mediaBlob], "demo.mp4", { type: "video/mp4" });
-    await Storage.put("demo.mp4", myFile);
+    const mediaFile = new File([mediaBlob], `${patient.id}.mp4`, { type: "video/mp4" });
+
+    await Storage.put(`${patient.id}.mp4`, mediaFile);
 
     navigate('/reports');
   }
 
+  const listPatients = patients.map((patient) => {
+    return (
+      <MenuItem key={patient.id} value={patient}>
+        {patient.dateOfBirth} {patient.firstName} {patient.surname}
+      </MenuItem>
+    );
+  })
+
   return (
     <Card className="analysis" sx={{ height: '85vh', width: '100%' }}>
       <CardContent >
-        {patient ?
+        {patient.id !== '' ?
           <ReactMediaRecorder
             video
             mediaRecorderOptions={{ mimeType: "video/webm;codecs=h264" }}
@@ -149,25 +244,17 @@ const Camera = () => {
             <Typography variant="h4" noWrap component="div" sx={{ flexGrow: 1, mt: 5, mb: 20 }}>
               Select a Patient
             </Typography>
-            <FormControl sx={{ m: 1, minWidth: 500 }}>
-              <InputLabel id="demo-simple-select-autowidth-label">Patient</InputLabel>
-              <Select
-                labelId="demo-simple-select-autowidth-label"
-                id="demo-simple-select-autowidth"
-                value={age}
-                onChange={handleAgeChange}
-                autoWidth
-                label="Patient"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Twentyy</MenuItem>
-                <MenuItem value={21}>Twenty one</MenuItem>
-                <MenuItem value={22}>Twenty one and a half</MenuItem>
-              </Select>
-              <Button variant="outlined" sx={{ mt: 50 }}>Confirm</Button>
-            </FormControl>
+            <TextField
+              label="patient"
+              select
+              fullWidth
+              onChange={handlePatientSelect}
+              sx={{ m: 1, minWidth: 250, maxWidth: 500 }}
+              variant="outlined"
+              value={patient}
+            >
+              {listPatients}
+            </TextField>
           </Box>
         }
       </CardContent>

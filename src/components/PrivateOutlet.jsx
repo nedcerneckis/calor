@@ -19,16 +19,12 @@ export function PrivateOutlet() {
   const checkIfUserIsAuthenticated = async () => {
     const user = await Auth.currentAuthenticatedUser().catch(err => {
       setDidFail(true);
-      console.log(err);
     });
     setPersistantUser(user);
     setLoading(false);
   }
 
   if (loading) {
-    console.log('persistantUser', persistantUser);
-    console.log('user', user);
-    console.log('didFail', didFail);
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />

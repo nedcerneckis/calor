@@ -6,7 +6,6 @@ import * as mutations from '../../graphql/mutations';
 import * as yup from 'yup';
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DataGrid } from '@mui/x-data-grid';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -222,7 +221,7 @@ const Patients = () => {
       field: "actions",
       headerName: "Actions",
       flex: 1,
-      minwidth: 120,
+      minwidth: 80,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (currentCell) => {
@@ -236,11 +235,6 @@ const Patients = () => {
               alignItems: "center"
             }}
           >
-            <Tooltip title="View">
-              <IconButton onClick={() => onView(currentCell)}>
-                <VisibilityIcon />
-              </IconButton>
-            </Tooltip>
             <Tooltip title="Edit">
               <IconButton onClick={() => onEdit(currentCell)}>
                 <EditIcon />
