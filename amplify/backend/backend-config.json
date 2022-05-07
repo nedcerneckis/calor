@@ -61,27 +61,19 @@
     }
   },
   "function": {
-    "S3Trigger9b09e867": {
-      "service": "Lambda",
+    "calor3c7ecdbd": {
+      "build": true,
       "providerPlugin": "awscloudformation",
-      "build": true
-    },
-    "S3Triggera7f76b6a": {
       "service": "Lambda",
-      "providerPlugin": "awscloudformation",
-      "build": true
-    },
-    "S3Trigger6fd56443": {
-      "service": "Lambda",
-      "providerPlugin": "awscloudformation",
-      "build": true
+      "dependsOn": []
     }
   },
-  "storage": {
-    "videoStorage": {
-      "service": "S3",
+  "storage": {},
+  "predictions": {
+    "transcription3f23ed04": {
       "providerPlugin": "awscloudformation",
-      "dependsOn": []
+      "service": "Transcribe",
+      "convertType": "transcription"
     }
   }
 }

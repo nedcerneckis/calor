@@ -18,6 +18,7 @@ type Patient @model @auth(rules: [
   physicalLevel: String!
   dietClass: String!
   medicalDiagnosis: [Diagnosis] @hasMany
+  medicalNotes: [MedicalNote] @hasMany
 }
 
 type Diagnosis @model @auth(rules: [
@@ -27,4 +28,13 @@ type Diagnosis @model @auth(rules: [
   patient: Patient @belongsTo
   diagnosisName: String!
   diagnosisDescription: String!
+  diagnosisSpeechSentiment: String!
+}
+
+type MedicalNote @model @auth(rules: [
+  { allow: owner }
+  ]) {
+  id: ID!
+  patient: Patient @belongsTo
+  content: String!
 }

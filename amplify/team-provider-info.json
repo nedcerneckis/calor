@@ -16,9 +16,9 @@
         "calorfaf2c0ca": {}
       },
       "function": {
-        "S3Trigger9b09e867": {
+        "calor3c7ecdbd": {
           "deploymentBucketName": "amplify-calor-dev-172016-deployment",
-          "s3Key": "amplify-builds/S3Trigger9b09e867-63637342616258457a5a-build.zip"
+          "s3Key": "amplify-builds/calor3c7ecdbd-75636e6763514c755832-build.zip"
         }
       }
     }

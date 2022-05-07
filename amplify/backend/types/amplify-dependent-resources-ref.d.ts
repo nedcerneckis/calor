@@ -18,17 +18,17 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "function": {
-        "S3Trigger9b09e867": {
+        "calor3c7ecdbd": {
             "Name": "string",
             "Arn": "string",
             "Region": "string",
             "LambdaExecutionRole": "string"
         }
     },
-    "storage": {
-        "videoStorage": {
-            "BucketName": "string",
-            "Region": "string"
+    "predictions": {
+        "transcription3f23ed04": {
+            "region": "string",
+            "language": "string"
         }
     }
 }

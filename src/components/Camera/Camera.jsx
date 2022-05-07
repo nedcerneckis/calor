@@ -10,14 +10,14 @@ import SendIcon from '@mui/icons-material/Send';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import * as queries from '../../graphql/queries';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import MicNoneIcon from '@mui/icons-material/MicNone';
 
 const Camera = () => {
   const camHeight = 720;
   const camWidth = 1280;
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [isRecording, setIsRecording] = useState(false);
-  const [cumulativeExpression, setCumulativeExpression] = useState(null);
   const displaySize = {
     width: camWidth,
     height: camHeight
@@ -38,6 +38,14 @@ const Camera = () => {
   const [patients, setPatients] = useState([]);
   const [stopWebcam, setStopWebcam] = useState(false);
   const navigate = useNavigate();
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition
+  } = useSpeechRecognition();
+
+  const startListening = () => SpeechRecognition.startListening({ continuous: true });
 
   const handlePatientSelect = (event) => {
     setPatient(event.target.value);
@@ -89,17 +97,15 @@ const Camera = () => {
         face.draw.drawDetections(canvasRef.current, resizedDetections);
         face.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
         face.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
-        if (isRecording) {
-          const [destructuredDetection] = detections;
-          const { expressions } = destructuredDetection;
-          allPredictionsOfSession.push(expressions);
-          setCumulativeExpression(addUpExpressionValues(allPredictionsOfSession));
-        }
+        const [destructuredDetection] = detections;
+        const { expressions } = destructuredDetection;
+        allPredictionsOfSession.push(expressions);
       } catch (error) {
         // @ts-ignore
         clearInterval(drawFaceInterval);
       }
     }, 50);
+    console.log('test interval');
   }
 
   const initModels = async () => {
@@ -133,23 +139,13 @@ const Camera = () => {
     drawFaceInterval();
   }
 
-  const startAndSetRecording = (startRecording) => {
-    setIsRecording(true);
-    startRecording()
-  }
-
-  const stopAndSetRecording = (stopRecording) => {
-    setIsRecording(false);
-    stopRecording()
-  }
-
   const videoPlayback = ({ startRecording, stopRecording, status, mediaBlobUrl }) => {
     switch (status) {
       case 'idle':
         return (
           <>
             <Typography sx={{ margin: 2 }}>Patient: {patient.firstName} {patient.surname} </Typography>
-            <Button onClick={() => startAndSetRecording(startRecording)} variant="contained" color="success" endIcon={<PlayArrowIcon />}>
+            <Button onClick={startRecording} variant="contained" color="success" endIcon={<PlayArrowIcon />}>
               Start Recording
             </Button>
             {
@@ -160,7 +156,6 @@ const Camera = () => {
                   <Webcam
                     ref={videoRef}
                     videoConstraints={displaySize}
-                    onUserMedia={faceAnalysis}
 
                   />
                 </Box>
@@ -173,8 +168,8 @@ const Camera = () => {
         }
         return (
           <Box>
-            <Button onClick={restartRecording} endIcon={<PlayArrowIcon />} variant="contained" color="success" sx={{ mr: 5 }}>
-              Start Recording
+            <Button onClick={restartRecording} endIcon={<PlayArrowIcon />} variant="contained" color="secondary" sx={{ mr: 5 }}>
+              Restart Recording
             </Button>
             <Button onClick={() => onS3Upload(mediaBlobUrl)} variant="outlined" endIcon={<SendIcon />}>
               Upload video
@@ -192,19 +187,35 @@ const Camera = () => {
       default:
         return (
           <>
-            <Button onClick={() => stopAndSetRecording(stopRecording)} endIcon={<StopIcon />} variant="contained" color="error">Stop Recording</Button>
+            <Button onClick={stopRecording} endIcon={<StopIcon />} variant="contained" color="error">Stop Recording</Button>
+            <Button
+              sx={{ ml: 1 }}
+              endIcon={<MicNoneIcon />}
+              variant="outlined"
+              onTouchStart={startListening}
+              onMouseDown={startListening}
+              onTouchEnd={SpeechRecognition.stopListening}
+              onMouseUp={SpeechRecognition.stopListening}
+            >
+              Hold to talk
+            </Button>
             {
               stopWebcam ?
                 null
                 :
-                <Box className="camera">
-                  <Webcam
-                    ref={videoRef}
-                    videoConstraints={displaySize}
-                    onUserMedia={faceAnalysis}
-                  />
-                  <canvas ref={canvasRef} />
-                </Box>
+                <>
+                  <Box className="camera">
+                    <Webcam
+                      ref={videoRef}
+                      videoConstraints={displaySize}
+                      onUserMedia={faceAnalysis}
+                    />
+                    <canvas ref={canvasRef} />
+                  </Box>
+                  <Typography variant="body1" gutterBottom>
+                    Conversation: {transcript}
+                  </Typography>
+                </>
             }
           </>
         );
@@ -213,9 +224,20 @@ const Camera = () => {
 
   const onS3Upload = async (file) => {
     const mediaBlob = await fetch(file).then(response => response.blob());
-    console.log(cumulativeExpression);
+    // convert mediaBlob to byte array
+    const mediaBytes = await mediaBlob.arrayBuffer();
+
 
     const mediaFile = new File([mediaBlob], `${patient.id}.mp4`, { type: "video/mp4" });
+
+    Predictions.convert({
+      transcription: {
+        source: {
+          bytes: mediaBytes
+        }
+      }
+    }).then(({ transcription: { fullText } }) => console.log({ fullText }))
+      .catch(err => console.log({ err }));
 
     await Storage.put(`${patient.id}.mp4`, mediaFile);
 
