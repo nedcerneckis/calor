@@ -60,14 +60,7 @@
       }
     }
   },
-  "function": {
-    "calor3c7ecdbd": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": []
-    }
-  },
+  "function": {},
   "storage": {},
   "predictions": {
     "transcription3f23ed04": {

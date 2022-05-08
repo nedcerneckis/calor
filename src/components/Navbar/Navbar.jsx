@@ -113,7 +113,6 @@ const Navbar = () => {
             </ListItemButton>
           </ListItem>
           <Divider />
-          { auth?.user ?
           <ListItem 
             onClick={signOutUser}
             disablePadding
@@ -126,21 +125,6 @@ const Navbar = () => {
               <ListItemText primary="Sign Out" />
             </ListItemButton>
           </ListItem>
-          :
-          <ListItem 
-            component={Link} 
-            to="/signin" 
-            disablePadding
-            style={{ color: 'inherit', textDecoration: 'inherit'}}
-          >
-            <ListItemButton>
-              <ListItemIcon>
-                <LoginIcon />
-              </ListItemIcon>
-              <ListItemText primary="Sign in" />
-            </ListItemButton>
-          </ListItem>
-          }
         </List>
       </Drawer>
       <Box

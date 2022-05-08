@@ -14,12 +14,6 @@
     "categories": {
       "auth": {
         "calorfaf2c0ca": {}
-      },
-      "function": {
-        "calor3c7ecdbd": {
-          "deploymentBucketName": "amplify-calor-dev-172016-deployment",
-          "s3Key": "amplify-builds/calor3c7ecdbd-75636e6763514c755832-build.zip"
-        }
       }
     }
   }
