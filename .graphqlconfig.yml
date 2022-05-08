@@ -1,6 +1,6 @@
 projects:
   calor:
-    schemaPath: src/graphql/schema.json
+    schemaPath: amplify/backend/api/calor/build/schema.graphql
     includes:
       - src/graphql/**/*.js
     excludes:

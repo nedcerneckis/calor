@@ -21,20 +21,10 @@ export const getPatient = /* GraphQL */ `
           id
           diagnosisName
           diagnosisDescription
+          diagnosisSpeechSentiment
           createdAt
           updatedAt
           patientMedicalDiagnosisId
-          owner
-        }
-        nextToken
-      }
-      medicalNotes {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          patientMedicalNotesId
           owner
         }
         nextToken
@@ -67,9 +57,6 @@ export const listPatients = /* GraphQL */ `
         medicalDiagnosis {
           nextToken
         }
-        medicalNotes {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -97,14 +84,12 @@ export const getDiagnosis = /* GraphQL */ `
         medicalDiagnosis {
           nextToken
         }
-        medicalNotes {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       diagnosisName
       diagnosisDescription
+      diagnosisSpeechSentiment
       createdAt
       updatedAt
       patientMedicalDiagnosisId
@@ -139,78 +124,10 @@ export const listDiagnoses = /* GraphQL */ `
         }
         diagnosisName
         diagnosisDescription
+        diagnosisSpeechSentiment
         createdAt
         updatedAt
         patientMedicalDiagnosisId
-        owner
-      }
-      nextToken
-    }
-  }
-`;
-export const getMedicalNote = /* GraphQL */ `
-  query GetMedicalNote($id: ID!) {
-    getMedicalNote(id: $id) {
-      id
-      patient {
-        id
-        firstName
-        surname
-        dateOfBirth
-        sex
-        email
-        therapist
-        alcoholUse
-        drugUse
-        smokingStatus
-        physicalLevel
-        dietClass
-        medicalDiagnosis {
-          nextToken
-        }
-        medicalNotes {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      content
-      createdAt
-      updatedAt
-      patientMedicalNotesId
-      owner
-    }
-  }
-`;
-export const listMedicalNotes = /* GraphQL */ `
-  query ListMedicalNotes(
-    $filter: ModelMedicalNoteFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listMedicalNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        patient {
-          id
-          firstName
-          surname
-          dateOfBirth
-          sex
-          email
-          therapist
-          alcoholUse
-          drugUse
-          smokingStatus
-          physicalLevel
-          dietClass
-          createdAt
-          updatedAt
-        }
-        content
-        createdAt
-        updatedAt
-        patientMedicalNotesId
         owner
       }
       nextToken

@@ -21,20 +21,10 @@ export const onCreatePatient = /* GraphQL */ `
           id
           diagnosisName
           diagnosisDescription
+          diagnosisSpeechSentiment
           createdAt
           updatedAt
           patientMedicalDiagnosisId
-          owner
-        }
-        nextToken
-      }
-      medicalNotes {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          patientMedicalNotesId
           owner
         }
         nextToken
@@ -64,20 +54,10 @@ export const onUpdatePatient = /* GraphQL */ `
           id
           diagnosisName
           diagnosisDescription
+          diagnosisSpeechSentiment
           createdAt
           updatedAt
           patientMedicalDiagnosisId
-          owner
-        }
-        nextToken
-      }
-      medicalNotes {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          patientMedicalNotesId
           owner
         }
         nextToken
@@ -107,20 +87,10 @@ export const onDeletePatient = /* GraphQL */ `
           id
           diagnosisName
           diagnosisDescription
+          diagnosisSpeechSentiment
           createdAt
           updatedAt
           patientMedicalDiagnosisId
-          owner
-        }
-        nextToken
-      }
-      medicalNotes {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          patientMedicalNotesId
           owner
         }
         nextToken
@@ -150,14 +120,12 @@ export const onCreateDiagnosis = /* GraphQL */ `
         medicalDiagnosis {
           nextToken
         }
-        medicalNotes {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       diagnosisName
       diagnosisDescription
+      diagnosisSpeechSentiment
       createdAt
       updatedAt
       patientMedicalDiagnosisId
@@ -185,14 +153,12 @@ export const onUpdateDiagnosis = /* GraphQL */ `
         medicalDiagnosis {
           nextToken
         }
-        medicalNotes {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       diagnosisName
       diagnosisDescription
+      diagnosisSpeechSentiment
       createdAt
       updatedAt
       patientMedicalDiagnosisId
@@ -220,119 +186,15 @@ export const onDeleteDiagnosis = /* GraphQL */ `
         medicalDiagnosis {
           nextToken
         }
-        medicalNotes {
-          nextToken
-        }
         createdAt
         updatedAt
       }
       diagnosisName
       diagnosisDescription
+      diagnosisSpeechSentiment
       createdAt
       updatedAt
       patientMedicalDiagnosisId
-      owner
-    }
-  }
-`;
-export const onCreateMedicalNote = /* GraphQL */ `
-  subscription OnCreateMedicalNote($owner: String) {
-    onCreateMedicalNote(owner: $owner) {
-      id
-      patient {
-        id
-        firstName
-        surname
-        dateOfBirth
-        sex
-        email
-        therapist
-        alcoholUse
-        drugUse
-        smokingStatus
-        physicalLevel
-        dietClass
-        medicalDiagnosis {
-          nextToken
-        }
-        medicalNotes {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      content
-      createdAt
-      updatedAt
-      patientMedicalNotesId
-      owner
-    }
-  }
-`;
-export const onUpdateMedicalNote = /* GraphQL */ `
-  subscription OnUpdateMedicalNote($owner: String) {
-    onUpdateMedicalNote(owner: $owner) {
-      id
-      patient {
-        id
-        firstName
-        surname
-        dateOfBirth
-        sex
-        email
-        therapist
-        alcoholUse
-        drugUse
-        smokingStatus
-        physicalLevel
-        dietClass
-        medicalDiagnosis {
-          nextToken
-        }
-        medicalNotes {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      content
-      createdAt
-      updatedAt
-      patientMedicalNotesId
-      owner
-    }
-  }
-`;
-export const onDeleteMedicalNote = /* GraphQL */ `
-  subscription OnDeleteMedicalNote($owner: String) {
-    onDeleteMedicalNote(owner: $owner) {
-      id
-      patient {
-        id
-        firstName
-        surname
-        dateOfBirth
-        sex
-        email
-        therapist
-        alcoholUse
-        drugUse
-        smokingStatus
-        physicalLevel
-        dietClass
-        medicalDiagnosis {
-          nextToken
-        }
-        medicalNotes {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      content
-      createdAt
-      updatedAt
-      patientMedicalNotesId
       owner
     }
   }
