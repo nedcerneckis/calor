@@ -19,13 +19,19 @@ export const onCreatePatient = /* GraphQL */ `
       medicalDiagnosis {
         items {
           id
+          patientId
           diagnosisName
-          diagnosisDescription
           diagnosisSpeechSentiment
+          angry
+          disgusted
+          fearful
+          happy
+          neutral
+          sad
+          surprised
           createdAt
           updatedAt
-          patientMedicalDiagnosisId
-          owner
+          therapist
         }
         nextToken
       }
@@ -52,13 +58,19 @@ export const onUpdatePatient = /* GraphQL */ `
       medicalDiagnosis {
         items {
           id
+          patientId
           diagnosisName
-          diagnosisDescription
           diagnosisSpeechSentiment
+          angry
+          disgusted
+          fearful
+          happy
+          neutral
+          sad
+          surprised
           createdAt
           updatedAt
-          patientMedicalDiagnosisId
-          owner
+          therapist
         }
         nextToken
       }
@@ -85,13 +97,19 @@ export const onDeletePatient = /* GraphQL */ `
       medicalDiagnosis {
         items {
           id
+          patientId
           diagnosisName
-          diagnosisDescription
           diagnosisSpeechSentiment
+          angry
+          disgusted
+          fearful
+          happy
+          neutral
+          sad
+          surprised
           createdAt
           updatedAt
-          patientMedicalDiagnosisId
-          owner
+          therapist
         }
         nextToken
       }
@@ -101,8 +119,8 @@ export const onDeletePatient = /* GraphQL */ `
   }
 `;
 export const onCreateDiagnosis = /* GraphQL */ `
-  subscription OnCreateDiagnosis($owner: String) {
-    onCreateDiagnosis(owner: $owner) {
+  subscription OnCreateDiagnosis($therapist: String) {
+    onCreateDiagnosis(therapist: $therapist) {
       id
       patient {
         id
@@ -123,19 +141,25 @@ export const onCreateDiagnosis = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      patientId
       diagnosisName
-      diagnosisDescription
       diagnosisSpeechSentiment
+      angry
+      disgusted
+      fearful
+      happy
+      neutral
+      sad
+      surprised
       createdAt
       updatedAt
-      patientMedicalDiagnosisId
-      owner
+      therapist
     }
   }
 `;
 export const onUpdateDiagnosis = /* GraphQL */ `
-  subscription OnUpdateDiagnosis($owner: String) {
-    onUpdateDiagnosis(owner: $owner) {
+  subscription OnUpdateDiagnosis($therapist: String) {
+    onUpdateDiagnosis(therapist: $therapist) {
       id
       patient {
         id
@@ -156,19 +180,25 @@ export const onUpdateDiagnosis = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      patientId
       diagnosisName
-      diagnosisDescription
       diagnosisSpeechSentiment
+      angry
+      disgusted
+      fearful
+      happy
+      neutral
+      sad
+      surprised
       createdAt
       updatedAt
-      patientMedicalDiagnosisId
-      owner
+      therapist
     }
   }
 `;
 export const onDeleteDiagnosis = /* GraphQL */ `
-  subscription OnDeleteDiagnosis($owner: String) {
-    onDeleteDiagnosis(owner: $owner) {
+  subscription OnDeleteDiagnosis($therapist: String) {
+    onDeleteDiagnosis(therapist: $therapist) {
       id
       patient {
         id
@@ -189,13 +219,19 @@ export const onDeleteDiagnosis = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      patientId
       diagnosisName
-      diagnosisDescription
       diagnosisSpeechSentiment
+      angry
+      disgusted
+      fearful
+      happy
+      neutral
+      sad
+      surprised
       createdAt
       updatedAt
-      patientMedicalDiagnosisId
-      owner
+      therapist
     }
   }
 `;

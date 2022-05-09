@@ -17,15 +17,22 @@ type Patient @model @auth(rules: [
   smokingStatus: String!
   physicalLevel: String!
   dietClass: String!
-  medicalDiagnosis: [Diagnosis] @hasMany
+  medicalDiagnosis: [Diagnosis] @hasMany(indexName: "forPatient", fields: ["id"])
 }
 
 type Diagnosis @model @auth(rules: [
-  { allow: owner }
+  { allow: owner, ownerField: "therapist"}
   ]) {
   id: ID!
-  patient: Patient @belongsTo
+  patient: Patient @belongsTo(fields: ["patientId"])
+  patientId: ID @index(name: "forPatient")
   diagnosisName: String!
-  diagnosisDescription: String!
   diagnosisSpeechSentiment: String!
+  angry: Float!,
+  disgusted: Float!,
+  fearful: Float!,
+  happy: Float!,
+  neutral: Float!,
+  sad: Float!,
+  surprised: Float!
 }

@@ -10,6 +10,7 @@ import SendIcon from '@mui/icons-material/Send';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import * as queries from '../../graphql/queries';
+import * as mutations from '../../graphql/mutations';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 
@@ -37,14 +38,9 @@ const Camera = () => {
   });
   const [patients, setPatients] = useState([]);
   const [stopWebcam, setStopWebcam] = useState(false);
+  const [allPredictionsOfSession, setAllPredictionsOfSession] = useState([]);
   const navigate = useNavigate();
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
-  } = useSpeechRecognition();
-
+  const { transcript } = useSpeechRecognition();
   const startListening = () => SpeechRecognition.startListening({ continuous: true });
 
   const handlePatientSelect = (event) => {
@@ -88,7 +84,6 @@ const Camera = () => {
   }
 
   const drawFaceInterval = () => {
-    let allPredictionsOfSession = [];
     setInterval(async () => {
       try {
         const detections = await face.detectAllFaces(videoRef.current.video, new face.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
@@ -99,13 +94,12 @@ const Camera = () => {
         face.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
         const [destructuredDetection] = detections;
         const { expressions } = destructuredDetection;
-        allPredictionsOfSession.push(expressions);
+        setAllPredictionsOfSession(oldEmotionArray => [...oldEmotionArray, expressions]);
       } catch (error) {
         // @ts-ignore
         clearInterval(drawFaceInterval);
       }
     }, 50);
-    console.log('test interval');
   }
 
   const initModels = async () => {
@@ -130,7 +124,6 @@ const Camera = () => {
       setStopWebcam(true);
       // @ts-ignore
       clearInterval(drawFaceInterval);
-      console.log('unmount');
     }
   }, []);
 
@@ -223,25 +216,53 @@ const Camera = () => {
   }
 
   const onS3Upload = async (file) => {
-    const mediaBlob = await fetch(file).then(response => response.blob());
-    // convert mediaBlob to byte array
-    const mediaBytes = await mediaBlob.arrayBuffer();
+    if(file){
+      const mediaBlob = await fetch(file).then(response => response.blob());
+      const mediaFile = new File([mediaBlob], `${patient.id}.mp4`, { type: "video/mp4" });
+      await Storage.put(`${patient.id}.mp4`, mediaFile);
+    }
 
+    const emotionObject = addUpExpressionValues(allPredictionsOfSession);
 
-    const mediaFile = new File([mediaBlob], `${patient.id}.mp4`, { type: "video/mp4" });
-
-    Predictions.convert({
-      transcription: {
+    const predictionResponse = await Predictions.interpret({
+      text: {
         source: {
-          bytes: mediaBytes
-        }
+          text: transcript,
+        },
+        // @ts-ignore
+        type: "ALL"
       }
-    }).then(({ transcription: { fullText } }) => console.log({ fullText }))
-      .catch(err => console.log({ err }));
+    });
 
-    await Storage.put(`${patient.id}.mp4`, mediaFile);
+    if (predictionResponse.textInterpretation.sentiment.predominant){
+      const { textInterpretation } = predictionResponse;
+      const { sentiment } = textInterpretation;
+      const { predominant } = sentiment;
+      const diagnosisToCreate = {
+        patientId: patient.id,
+        diagnosisName: '',
+        diagnosisSpeechSentiment: predominant,
+        angry: emotionObject.angry,
+        disgusted: emotionObject.disgusted,
+        fearful: emotionObject.fearful,
+        happy: emotionObject.happy,
+        neutral: emotionObject.neutral,
+        sad: emotionObject.sad,
+        surprised: emotionObject.surprised
+      }
+      console.log(diagnosisToCreate)
+      try {
+        await API.graphql({
+          query: mutations.createDiagnosis,
+          variables: { input: diagnosisToCreate },
+          authMode: 'AMAZON_COGNITO_USER_POOLS'
+        });
 
-    navigate('/reports');
+        navigate('/reports');
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 
   const listPatients = patients.map((patient) => {

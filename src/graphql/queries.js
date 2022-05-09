@@ -19,13 +19,19 @@ export const getPatient = /* GraphQL */ `
       medicalDiagnosis {
         items {
           id
+          patientId
           diagnosisName
-          diagnosisDescription
           diagnosisSpeechSentiment
+          angry
+          disgusted
+          fearful
+          happy
+          neutral
+          sad
+          surprised
           createdAt
           updatedAt
-          patientMedicalDiagnosisId
-          owner
+          therapist
         }
         nextToken
       }
@@ -87,13 +93,19 @@ export const getDiagnosis = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      patientId
       diagnosisName
-      diagnosisDescription
       diagnosisSpeechSentiment
+      angry
+      disgusted
+      fearful
+      happy
+      neutral
+      sad
+      surprised
       createdAt
       updatedAt
-      patientMedicalDiagnosisId
-      owner
+      therapist
     }
   }
 `;
@@ -122,13 +134,19 @@ export const listDiagnoses = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        patientId
         diagnosisName
-        diagnosisDescription
         diagnosisSpeechSentiment
+        angry
+        disgusted
+        fearful
+        happy
+        neutral
+        sad
+        surprised
         createdAt
         updatedAt
-        patientMedicalDiagnosisId
-        owner
+        therapist
       }
       nextToken
     }

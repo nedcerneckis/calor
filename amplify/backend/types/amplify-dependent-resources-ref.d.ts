@@ -17,10 +17,20 @@ export type AmplifyDependentResourcesAttributes = {
             "AppClientID": "string"
         }
     },
+    "storage": {
+        "s306f94149": {
+            "BucketName": "string",
+            "Region": "string"
+        }
+    },
     "predictions": {
         "transcription3f23ed04": {
             "region": "string",
             "language": "string"
+        },
+        "interpretText087d7178": {
+            "region": "string",
+            "type": "string"
         }
     }
 }

@@ -22,13 +22,19 @@ export const createPatient = /* GraphQL */ `
       medicalDiagnosis {
         items {
           id
+          patientId
           diagnosisName
-          diagnosisDescription
           diagnosisSpeechSentiment
+          angry
+          disgusted
+          fearful
+          happy
+          neutral
+          sad
+          surprised
           createdAt
           updatedAt
-          patientMedicalDiagnosisId
-          owner
+          therapist
         }
         nextToken
       }
@@ -58,13 +64,19 @@ export const updatePatient = /* GraphQL */ `
       medicalDiagnosis {
         items {
           id
+          patientId
           diagnosisName
-          diagnosisDescription
           diagnosisSpeechSentiment
+          angry
+          disgusted
+          fearful
+          happy
+          neutral
+          sad
+          surprised
           createdAt
           updatedAt
-          patientMedicalDiagnosisId
-          owner
+          therapist
         }
         nextToken
       }
@@ -94,13 +106,19 @@ export const deletePatient = /* GraphQL */ `
       medicalDiagnosis {
         items {
           id
+          patientId
           diagnosisName
-          diagnosisDescription
           diagnosisSpeechSentiment
+          angry
+          disgusted
+          fearful
+          happy
+          neutral
+          sad
+          surprised
           createdAt
           updatedAt
-          patientMedicalDiagnosisId
-          owner
+          therapist
         }
         nextToken
       }
@@ -135,13 +153,19 @@ export const createDiagnosis = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      patientId
       diagnosisName
-      diagnosisDescription
       diagnosisSpeechSentiment
+      angry
+      disgusted
+      fearful
+      happy
+      neutral
+      sad
+      surprised
       createdAt
       updatedAt
-      patientMedicalDiagnosisId
-      owner
+      therapist
     }
   }
 `;
@@ -171,13 +195,19 @@ export const updateDiagnosis = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      patientId
       diagnosisName
-      diagnosisDescription
       diagnosisSpeechSentiment
+      angry
+      disgusted
+      fearful
+      happy
+      neutral
+      sad
+      surprised
       createdAt
       updatedAt
-      patientMedicalDiagnosisId
-      owner
+      therapist
     }
   }
 `;
@@ -207,13 +237,19 @@ export const deleteDiagnosis = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      patientId
       diagnosisName
-      diagnosisDescription
       diagnosisSpeechSentiment
+      angry
+      disgusted
+      fearful
+      happy
+      neutral
+      sad
+      surprised
       createdAt
       updatedAt
-      patientMedicalDiagnosisId
-      owner
+      therapist
     }
   }
 `;

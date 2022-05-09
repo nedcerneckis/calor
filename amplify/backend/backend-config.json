@@ -61,12 +61,23 @@
     }
   },
   "function": {},
-  "storage": {},
+  "storage": {
+    "s306f94149": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
+  },
   "predictions": {
     "transcription3f23ed04": {
       "providerPlugin": "awscloudformation",
       "service": "Transcribe",
       "convertType": "transcription"
+    },
+    "interpretText087d7178": {
+      "providerPlugin": "awscloudformation",
+      "service": "Comprehend",
+      "interpretType": "interpretText"
     }
   }
 }

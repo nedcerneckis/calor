@@ -197,6 +197,12 @@ const Patients = () => {
       editable: true
     },
     {
+      field: "smokingStatus",
+      headerName: "Smoking Status",
+      flex: 1,
+      editable: true
+    },
+    {
       field: "drugUse",
       headerName: "Drug Use",
       type: "dateTime",
