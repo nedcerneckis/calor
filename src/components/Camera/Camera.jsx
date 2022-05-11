@@ -274,7 +274,7 @@ const Camera = () => {
   })
 
   return (
-    <Card className="analysis" sx={{ height: '85vh', width: '100%' }}>
+    <Card className="analysis" sx={{ minHeight: '85vh', height: '100%', width: '100%' }}>
       <CardContent >
         {patient.id !== '' ?
           <ReactMediaRecorder
