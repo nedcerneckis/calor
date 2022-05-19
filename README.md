@@ -1,5 +1,5 @@
 # Calor - Final year project
-A web application capable of assisting in psychotherapy built for therapists using AI and Deep Learning
+A web application capable of assisting in psychotherapy built for therapists using AI
 
 ## Acknowledgements
 
